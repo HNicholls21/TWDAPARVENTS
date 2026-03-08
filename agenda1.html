@@ -1151,6 +1151,7 @@ header {
 
 
 
+
 <script>
 (function () {
   const eventDate = "2026-03-08";
@@ -1170,10 +1171,10 @@ header {
 
     On the live site, forcedPreviewTime should usually stay blank.
   */
-  const delayModeEnabled = true;
-  const currentActiveSessionText = "10.40 TOTS/A NOVICE/A LYRICAL";
-  const scheduleDelayMinutes = 60;
-  const forcedPreviewTime = "11:50";
+  const delayModeEnabled = false;
+  const currentActiveSessionText = "";
+  const scheduleDelayMinutes = 0;
+  const forcedPreviewTime = "";
 
   const tz = "Europe/London";
   const sections = Array.from(document.querySelectorAll(".section[data-time]"));
@@ -1211,6 +1212,33 @@ header {
     return hour * 60 + minute;
   }
 
+  function normaliseText(str) {
+    return (str || "").replace(/\s+/g, " ").trim().toUpperCase();
+  }
+
+  function findManualCurrent(items, currentText) {
+    const text = normaliseText(currentText);
+    if (!text) return null;
+
+    // Try exact time + title match first, e.g. "10.40 TOTS/A NOVICE/A LYRICAL"
+    const timeMatch = text.match(/^(\d{1,2}\.\d{2})\s+(.*)$/);
+    if (timeMatch) {
+      const wantedTime = timeMatch[1];
+      const wantedTitle = normaliseText(timeMatch[2]);
+      const exact = items.find(item =>
+        item.timeText === wantedTime &&
+        normaliseText(item.title).includes(wantedTitle)
+      );
+      if (exact) return exact;
+
+      const timeOnly = items.find(item => item.timeText === wantedTime);
+      if (timeOnly) return timeOnly;
+    }
+
+    // Fallback: title contains entered text
+    return items.find(item => normaliseText(item.title).includes(text)) || null;
+  }
+
   let now = londonNowParts();
   if (forcedPreviewTime) {
     const bits = forcedPreviewTime.split(".");
@@ -1222,7 +1250,7 @@ header {
   if (today !== eventDate && !forcedPreviewTime) return;
 
   const actualNowMinutes = now.hour * 60 + now.minute;
-  const nowMinutes = actualNowMinutes - (delayModeEnabled ? scheduleDelayMinutes : 0);
+  const effectiveNowMinutes = actualNowMinutes - (delayModeEnabled ? scheduleDelayMinutes : 0);
 
   const items = sections.map((section) => {
     const title = section.querySelector(".title")?.textContent?.trim() || "Current session";
@@ -1238,20 +1266,32 @@ header {
   if (!items.length) return;
 
   let current = null;
-  for (let i = 0; i < items.length; i++) {
-    const thisItem = items[i];
-    const nextItem = items[i + 1];
-    const start = thisItem.minutes;
-    const end = nextItem ? nextItem.minutes : start + 60;
-    if (nowMinutes >= start && nowMinutes < end) {
-      current = thisItem;
-      break;
+
+  // If delay mode is enabled and a manual current session is supplied, use that first.
+  if (delayModeEnabled && currentActiveSessionText.trim()) {
+    current = findManualCurrent(items, currentActiveSessionText);
+  }
+
+  // Otherwise fall back to time-based logic (delay-adjusted if delay mode is enabled).
+  if (!current) {
+    for (let i = 0; i < items.length; i++) {
+      const thisItem = items[i];
+      const nextItem = items[i + 1];
+      const start = thisItem.minutes;
+      const end = nextItem ? nextItem.minutes : start + 60;
+      if (effectiveNowMinutes >= start && effectiveNowMinutes < end) {
+        current = thisItem;
+        break;
+      }
     }
   }
 
+  // Clear previous live state and badges
   document.querySelectorAll(".section").forEach(s => {
     s.classList.remove("is-live");
     if (s.id === "current-session") s.removeAttribute("id");
+    const oldBadge = s.querySelector(".live-badge");
+    if (oldBadge) oldBadge.remove();
   });
 
   if (delayModeEnabled && delayBanner && delayBannerCopy) {
@@ -1268,7 +1308,7 @@ header {
   }
 
   if (!current) {
-    if (nowMinutes < items[0].minutes) {
+    if (effectiveNowMinutes < items[0].minutes) {
       items[0].section.id = "current-session";
       items[0].section.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -1278,7 +1318,7 @@ header {
   current.section.id = "current-session";
   current.section.classList.add("is-live");
   const card = current.section.querySelector(".card");
-  if (card && !card.querySelector(".live-badge")) {
+  if (card) {
     const badge = document.createElement("div");
     badge.className = "live-badge";
     const titleText = current.title.toUpperCase();
@@ -1293,6 +1333,7 @@ header {
   current.section.scrollIntoView({ behavior: "smooth", block: "start" });
 })();
 </script>
+
 
 
 
