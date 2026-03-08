@@ -160,40 +160,166 @@ header {
   .header-text h1 { font-size: 1.55rem; }
 }
 
+/* CSS-only mobile navigation */
+.mobile-nav-wrap{
+  display:none;
+}
+@media (max-width: 1024px){
+  .site-menu{
+    display:none;
+  }
+  .mobile-nav-wrap{
+    display:block;
+    position:sticky;
+    top:0;
+    z-index:95;
+    background:rgba(255,255,255,0.98);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:10px 14px;
+  }
+  .mobile-nav-inner{
+    max-width:1060px;
+    margin:0 auto;
+  }
+  .mobile-nav-toggle{
+    position:absolute;
+    opacity:0;
+    pointer-events:none;
+  }
+  .mobile-nav-button{
+    display:inline-flex;
+    align-items:center;
+    appearance:none;
+    border:1.5px solid var(--red);
+    background:#ffffff;
+    color:var(--black);
+    border-radius:999px;
+    padding:10px 14px;
+    font-weight:800;
+    font-size:0.95rem;
+    box-shadow:0 2px 10px rgba(0,0,0,0.03);
+    cursor:pointer;
+  }
+  .mobile-nav-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.34);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+    z-index:98;
+  }
+  .mobile-nav-drawer{
+    position:fixed;
+    top:0;
+    left:0;
+    width:min(340px,84vw);
+    height:100vh;
+    background:#ffffff;
+    box-shadow:12px 0 28px rgba(0,0,0,0.18);
+    transform:translateX(-100%);
+    transition:transform .22s ease;
+    z-index:99;
+    display:flex;
+    flex-direction:column;
+  }
+  .mobile-nav-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 16px 14px;
+    border-bottom:1px solid var(--line);
+  }
+  .mobile-nav-title{
+    font-weight:800;
+    color:var(--black);
+  }
+  .mobile-nav-close{
+    display:inline-flex;
+    align-items:center;
+    border:1px solid var(--line);
+    background:#ffffff;
+    color:var(--black);
+    border-radius:999px;
+    padding:8px 12px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .mobile-nav-links{
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .mobile-nav-link{
+    text-decoration:none;
+    color:var(--black);
+    background:var(--white);
+    border:1.5px solid var(--red);
+    border-radius:16px;
+    padding:13px 14px;
+    font-weight:700;
+    box-shadow:0 2px 10px rgba(0,0,0,0.03);
+  }
+  .mobile-nav-link.active{
+    background:var(--red);
+    color:var(--white);
+    border-color:var(--red-dark);
+  }
 
-.policy-notice-home {
-  background: linear-gradient(180deg, #fff6f7 0%, #ffffff 100%);
-  border: 1px solid #f0d2d7;
-  border-left: 6px solid var(--red);
-  border-radius: 22px;
-  padding: 20px 22px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
+  .mobile-nav-toggle:checked ~ .mobile-nav-overlay{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .mobile-nav-toggle:checked ~ .mobile-nav-drawer{
+    transform:translateX(0);
+  }
 }
-.policy-notice-home h3 {
-  margin: 0 0 10px;
-  color: var(--black);
-  font-size: 1.2rem;
-  line-height: 1.2;
-}
-.policy-notice-home p {
-  margin: 0 0 10px;
-  line-height: 1.7;
-  color: #222;
-}
-.policy-notice-home p:last-child {
-  margin-bottom: 0;
-}
-.policy-kicker {
-  display: inline-block;
-  margin-bottom: 10px;
-  color: var(--red);
+
+
+.jump-current,
+.back-to-top{
+  position: fixed;
+  bottom: 18px;
+  z-index: 40;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 12px 16px;
   font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  font-size: .82rem;
+  font-size: 0.9rem;
+  line-height: 1;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
 }
 
+.jump-current{
+  right: 158px;
+  color:#ffffff;
+  background: linear-gradient(180deg, #3a3a3a 0%, #111111 100%);
+  border:1px solid rgba(0,0,0,0.55);
+}
+
+.back-to-top{
+  right: 18px;
+  color:#ffffff;
+  background: linear-gradient(180deg, var(--red) 0%, var(--red-dark) 100%);
+}
+
+@media (max-width: 860px){
+  .jump-current{
+    right: 138px;
+    bottom: 12px;
+    padding: 11px 14px;
+  }
+  .back-to-top{
+    right: 12px;
+    bottom: 12px;
+    padding: 11px 14px;
+  }
+}
 </style>
 </head>
 <body>
@@ -205,14 +331,38 @@ header {
   </div>
 </header>
 
+<div class="mobile-nav-wrap">
+  <div class="mobile-nav-inner">
+    <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" />
+    <label for="mobileNavToggle" class="mobile-nav-button">☰ Menu</label>
+    <label for="mobileNavToggle" class="mobile-nav-overlay" aria-hidden="true"></label>
+    <aside class="mobile-nav-drawer" aria-label="Mobile site navigation">
+      <div class="mobile-nav-header">
+        <div class="mobile-nav-title">Navigation</div>
+        <label for="mobileNavToggle" class="mobile-nav-close">Close</label>
+      </div>
+      <nav class="mobile-nav-links">
+        <a class="mobile-nav-link active" href="./">Homepage</a>
+        <a class="mobile-nav-link" href="agenda1.html">Sunday 8 March</a>
+        <a class="mobile-nav-link" href="agenda2.html">Sunday 15 March</a>
+        <a class="mobile-nav-link" href="agenda3.html">Sunday 22 March</a>
+        <a class="mobile-nav-link" href="cafe.html">Café</a>
+        <a class="mobile-nav-link" href="awards.html">Awards</a>
+      </nav>
+    </aside>
+  </div>
+</div>
 <nav class="site-menu" aria-label="Site pages">
   <div class="site-menu-inner">
-    <a class="site-menu-link active" href="./">Home</a>
+    <a class="site-menu-link active" href="./">Homepage</a>
     <a class="site-menu-link" href="agenda1.html">Sunday 8 March</a>
     <a class="site-menu-link" href="agenda2.html">Sunday 15 March</a>
     <a class="site-menu-link" href="agenda3.html">Sunday 22 March</a>
+    <a class="site-menu-link" href="cafe.html">Café</a>
+    <a class="site-menu-link" href="awards.html">Awards</a>
   </div>
 </nav>
+
 
 <div class="container">
   <section class="hero-card">
@@ -222,15 +372,6 @@ header {
     <p>Please select the relevant competition date below to view the agenda for that weekend.</p>
     
   </section>
-
-  <section class="policy-notice-home" aria-labelledby="photo-video-policy-home">
-    <div class="policy-kicker">Important Notice</div>
-    <h3 id="photo-video-policy-home">Photo and Video Policy</h3>
-    <p><strong>No photography or videography is permitted at any time during the competition.</strong></p>
-    <p>To protect all performers, families and participating schools, attendees must not take photos or record videos anywhere in the venue during the event.</p>
-    <p>We ask all guests to respect this policy fully. Anyone found photographing or recording may be asked to stop immediately and may be required to leave the venue.</p>
-  </section>
-
   <div style="height:1px;background:#e6e6e6;margin:30px 0;"></div>
 <section class="week-grid">
     <article class="week-card">
