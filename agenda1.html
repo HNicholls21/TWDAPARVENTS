@@ -1152,6 +1152,7 @@ header {
 
 
 
+
 <script>
 (function () {
   const eventDate = "2026-03-08";
@@ -1161,7 +1162,7 @@ header {
     -------------------
     Leave these values as they are for normal operation.
 
-    To simulate a delay in GitHub, edit ONLY the 4 lines below.
+    To simulate or run a delay in GitHub, edit ONLY the 4 lines below.
 
     Example:
     delayModeEnabled = true
@@ -1173,7 +1174,7 @@ header {
   */
   const delayModeEnabled = false;
   const currentActiveSessionText = "";
-  const scheduleDelayMinutes = ;
+  const scheduleDelayMinutes = 0;
   const forcedPreviewTime = "";
 
   const tz = "Europe/London";
@@ -1220,11 +1221,11 @@ header {
     const text = normaliseText(currentText);
     if (!text) return null;
 
-    // Try exact time + title match first, e.g. "10.40 TOTS/A NOVICE/A LYRICAL"
     const timeMatch = text.match(/^(\d{1,2}\.\d{2})\s+(.*)$/);
     if (timeMatch) {
       const wantedTime = timeMatch[1];
       const wantedTitle = normaliseText(timeMatch[2]);
+
       const exact = items.find(item =>
         item.timeText === wantedTime &&
         normaliseText(item.title).includes(wantedTitle)
@@ -1235,8 +1236,20 @@ header {
       if (timeOnly) return timeOnly;
     }
 
-    // Fallback: title contains entered text
     return items.find(item => normaliseText(item.title).includes(text)) || null;
+  }
+
+  function findCurrentByTime(items, minutesNow) {
+    for (let i = 0; i < items.length; i++) {
+      const thisItem = items[i];
+      const nextItem = items[i + 1];
+      const start = thisItem.minutes;
+      const end = nextItem ? nextItem.minutes : start + 60;
+      if (minutesNow >= start && minutesNow < end) {
+        return thisItem;
+      }
+    }
+    return null;
   }
 
   let now = londonNowParts();
@@ -1250,7 +1263,7 @@ header {
   if (today !== eventDate && !forcedPreviewTime) return;
 
   const actualNowMinutes = now.hour * 60 + now.minute;
-  const effectiveNowMinutes = actualNowMinutes - (delayModeEnabled ? scheduleDelayMinutes : 0);
+  const delayedNowMinutes = actualNowMinutes - scheduleDelayMinutes;
 
   const items = sections.map((section) => {
     const title = section.querySelector(".title")?.textContent?.trim() || "Current session";
@@ -1267,26 +1280,17 @@ header {
 
   let current = null;
 
-  // If delay mode is enabled and a manual current session is supplied, use that first.
-  if (delayModeEnabled && currentActiveSessionText.trim()) {
+  if (delayModeEnabled) {
+    // In delay mode, prefer the manual current-session input if provided.
     current = findManualCurrent(items, currentActiveSessionText);
+    // If not provided or not found, fall back to delay-adjusted time.
+    if (!current) current = findCurrentByTime(items, delayedNowMinutes);
+  } else {
+    // Normal mode: always use the actual current time.
+    current = findCurrentByTime(items, actualNowMinutes);
   }
 
-  // Otherwise fall back to time-based logic (delay-adjusted if delay mode is enabled).
-  if (!current) {
-    for (let i = 0; i < items.length; i++) {
-      const thisItem = items[i];
-      const nextItem = items[i + 1];
-      const start = thisItem.minutes;
-      const end = nextItem ? nextItem.minutes : start + 60;
-      if (effectiveNowMinutes >= start && effectiveNowMinutes < end) {
-        current = thisItem;
-        break;
-      }
-    }
-  }
-
-  // Clear previous live state and badges
+  // Clear previous live state and old badges
   document.querySelectorAll(".section").forEach(s => {
     s.classList.remove("is-live");
     if (s.id === "current-session") s.removeAttribute("id");
@@ -1294,6 +1298,7 @@ header {
     if (oldBadge) oldBadge.remove();
   });
 
+  // Banner only appears in delay mode
   if (delayModeEnabled && delayBanner && delayBannerCopy) {
     delayBanner.classList.remove("hidden");
     delayBannerCopy.innerHTML =
@@ -1308,7 +1313,8 @@ header {
   }
 
   if (!current) {
-    if (effectiveNowMinutes < items[0].minutes) {
+    const referenceMinutes = delayModeEnabled ? delayedNowMinutes : actualNowMinutes;
+    if (referenceMinutes < items[0].minutes) {
       items[0].section.id = "current-session";
       items[0].section.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -1317,22 +1323,20 @@ header {
 
   current.section.id = "current-session";
   current.section.classList.add("is-live");
+
   const card = current.section.querySelector(".card");
   if (card) {
     const badge = document.createElement("div");
     badge.className = "live-badge";
     const titleText = current.title.toUpperCase();
-    if (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") {
-      badge.textContent = "On Break";
-    } else {
-      badge.textContent = "Now Running";
-    }
+    badge.textContent = (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") ? "On Break" : "Now Running";
     card.insertBefore(badge, card.firstChild);
   }
 
   current.section.scrollIntoView({ behavior: "smooth", block: "start" });
 })();
 </script>
+
 
 
 
