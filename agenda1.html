@@ -483,96 +483,66 @@ header {
 }
 
 
-/* Dynamic live delay banner */
-.delay-banner.hidden{
-  display:none;
-}
-.delay-banner{
-  max-width:1060px;
-  margin:0 auto 10px;
-  padding:12px 16px;
-  background:linear-gradient(180deg,#fff6f6 0%,#f3f3f3 100%);
-  border:1px solid rgba(0,0,0,0.12);
-  border-left:6px solid #d00000;
-  border-radius:10px;
-  font-weight:600;
-  position:sticky;
-  top:72px;
-  z-index:60;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  box-shadow:0 6px 16px rgba(0,0,0,0.06);
-}
-.delay-banner strong{
-  display:block;
-  font-size:1rem;
-  margin:0 0 2px;
-}
-.delay-banner-copy{
-  line-height:1.45;
-}
-.alert-dot{
-  width:12px;
-  height:12px;
-  min-width:12px;
-  border-radius:50%;
-  background:#d00000;
-  animation:alertPulse 1.8s ease-in-out infinite;
-}
-@keyframes alertPulse{
-  0%{ box-shadow:0 0 0 0 rgba(208,0,0,0.35); }
-  70%{ box-shadow:0 0 0 10px rgba(208,0,0,0); }
-  100%{ box-shadow:0 0 0 0 rgba(208,0,0,0); }
-}
 
-/* Live status pill */
-.live-status-wrap{
-  max-width:1060px;
-  margin:8px auto 12px;
-}
-.live-status-pill{
-  padding:6px 12px;
-  font-weight:600;
-  font-size:0.9rem;
-  border-radius:20px;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  border:1px solid transparent;
-}
-.status-green{
-  background:#e9f7ef;
-  color:#1e7e34;
-  border-color:#b7e4c7;
-}
-.status-red{
-  background:#fdecea;
-  color:#b02a37;
-  border-color:#f5c2c7;
-}
-.status-yellow{
-  background:#fff7e6;
-  color:#8a6d3b;
-  border-color:#ffe08a;
-}
-.status-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:currentColor;
-}
+/* Mobile status aligned with menu */
 @media (max-width:1024px){
-  .delay-banner{
-    top:62px;
-    margin:0 14px 10px;
-    align-items:flex-start;
+  .mobile-nav-inner{
+    max-width:1060px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .mobile-nav-button{
+    flex:0 0 auto;
+  }
+  .mobile-nav-status{
+    flex:0 1 auto;
+    min-width:0;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .mobile-nav-status .live-status-pill{
+    margin:0;
+    max-width:none;
+    white-space:nowrap;
+    font-size:0.82rem;
+    padding:6px 10px;
+  }
+  .mobile-nav-toggle:checked ~ .mobile-nav-status{
+    display:none;
+  }
+  /* Hide standalone status block on mobile if present */
+  .live-status-wrap{
+    display:none;
+  }
+}
+@media (min-width:1025px){
+  .mobile-nav-status{
+    display:none;
   }
   .live-status-wrap{
-    margin:8px 14px 12px;
+    display:block;
   }
 }
 
+/* Dynamic live delay banner */
+.delay-banner.hidden{display:none;}
+.delay-banner{max-width:1060px;margin:0 auto 10px;padding:12px 16px;background:linear-gradient(180deg,#fff6f6 0%,#f3f3f3 100%);border:1px solid rgba(0,0,0,0.12);border-left:6px solid #d00000;border-radius:10px;font-weight:600;position:sticky;top:72px;z-index:60;display:flex;align-items:center;gap:12px;box-shadow:0 6px 16px rgba(0,0,0,0.06);}
+.delay-banner strong{display:block;font-size:1rem;margin:0 0 2px;}
+.delay-banner-copy{line-height:1.45;}
+.alert-dot{width:12px;height:12px;min-width:12px;border-radius:50%;background:#d00000;animation:alertPulse 1.8s ease-in-out infinite;}
+@keyframes alertPulse{0%{ box-shadow:0 0 0 0 rgba(208,0,0,0.35); }70%{ box-shadow:0 0 0 10px rgba(208,0,0,0); }100%{ box-shadow:0 0 0 0 rgba(208,0,0,0); }}
+
+/* Live status pill */
+.live-status-wrap{max-width:1060px;margin:8px auto 12px;}
+.live-status-pill{padding:6px 12px;font-weight:600;font-size:0.9rem;border-radius:20px;display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;}
+.status-green{background:#e9f7ef;color:#1e7e34;border-color:#b7e4c7;}
+.status-red{background:#fdecea;color:#b02a37;border-color:#f5c2c7;}
+.status-yellow{background:#fff7e6;color:#8a6d3b;border-color:#ffe08a;}
+.status-dot{width:8px;height:8px;border-radius:50%;background:currentColor;}
+@media (max-width:1024px){.delay-banner{top:62px;margin:0 14px 10px;align-items:flex-start;}.live-status-wrap{margin:8px 14px 12px;}}
 </style>
 </head>
 <body>
@@ -589,6 +559,12 @@ header {
   <div class="mobile-nav-inner">
     <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" />
     <label for="mobileNavToggle" class="mobile-nav-button">☰ Menu</label>
+    <div class="mobile-nav-status">
+      <div id="mobileLiveStatus" class="live-status-pill status-green">
+        <span class="status-dot"></span>
+        <span>LIVE – On Schedule</span>
+      </div>
+    </div>
     <label for="mobileNavToggle" class="mobile-nav-overlay" aria-hidden="true"></label>
     <aside class="mobile-nav-drawer" aria-label="Mobile site navigation">
       <div class="mobile-nav-header">
@@ -615,6 +591,8 @@ header {
     <a class="site-menu-link active" href="agenda1.html">Sunday 8 March</a>
     <a class="site-menu-link" href="agenda2.html">Sunday 15 March</a>
     <a class="site-menu-link" href="agenda3.html">Sunday 22 March</a>
+      <a class="site-menu-link" href="cafe.html">Café</a>
+    <a class="site-menu-link" href="awards.html">Awards</a>
   </div>
 </nav>
 
@@ -643,7 +621,7 @@ header {
     <div class="hero-divider"></div>
     <p>Adjudicator: Leigh-Ann James FABD Examiner</p>
   </section>
-<p class="live-status-text"></p>
+
   </div>
 
   <section class="policy-banner" aria-label="Photo and video policy reminder">
@@ -1203,40 +1181,23 @@ header {
 (function () {
   const eventDate = "2026-03-08";
   const tz = "Europe/London";
-  const liveStatusUrl = "live-status.json";
-
+  const liveStatusUrl = "live-status.json?ts=" + Date.now();
   const sections = Array.from(document.querySelectorAll(".section[data-time]"));
   const delayBanner = document.getElementById("delayBanner");
   const delayBannerCopy = document.getElementById("delayBannerCopy");
   const statusEl = document.getElementById("liveStatus");
 
   function londonNowParts() {
-    const parts = new Intl.DateTimeFormat("en-GB", {
-      timeZone: tz,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hourCycle: "h23"
-    }).formatToParts(new Date());
-
+    const parts = new Intl.DateTimeFormat("en-GB", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
     const get = type => parts.find(p => p.type === type)?.value;
-    return {
-      year: get("year"),
-      month: get("month"),
-      day: get("day"),
-      hour: parseInt(get("hour"), 10),
-      minute: parseInt(get("minute"), 10)
-    };
+    return { year: get("year"), month: get("month"), day: get("day"), hour: parseInt(get("hour"), 10), minute: parseInt(get("minute"), 10) };
   }
 
   function parseScheduleTime(str) {
     const raw = (str || "").trim().replace("APPROX.", "").trim();
     const bits = raw.split(".");
     if (bits.length < 2) return null;
-    const hour = parseInt(bits[0], 10);
-    const minute = parseInt(bits[1], 10);
+    const hour = parseInt(bits[0], 10), minute = parseInt(bits[1], 10);
     if (Number.isNaN(hour) || Number.isNaN(minute)) return null;
     return hour * 60 + minute;
   }
@@ -1247,16 +1208,8 @@ header {
 
   function setStatus(mode, delayMinutes) {
     if (!statusEl) return;
-    if (mode === "red") {
-      statusEl.className = "live-status-pill status-red";
-      statusEl.innerHTML = '<span class="status-dot"></span><span>LIVE – ' + delayMinutes + ' mins behind</span>';
-      return;
-    }
-    if (mode === "yellow") {
-      statusEl.className = "live-status-pill status-yellow";
-      statusEl.innerHTML = '<span class="status-dot"></span><span>Break in Progress</span>';
-      return;
-    }
+    if (mode === "red") { statusEl.className = "live-status-pill status-red"; statusEl.innerHTML = '<span class="status-dot"></span><span>LIVE – ' + delayMinutes + ' mins behind</span>'; return; }
+    if (mode === "yellow") { statusEl.className = "live-status-pill status-yellow"; statusEl.innerHTML = '<span class="status-dot"></span><span>Break in Progress</span>'; return; }
     statusEl.className = "live-status-pill status-green";
     statusEl.innerHTML = '<span class="status-dot"></span><span>LIVE – On Schedule</span>';
   }
@@ -1273,10 +1226,8 @@ header {
   function applyCurrentSection(current, delayModeEnabled, delayMinutes) {
     clearLiveState();
     if (!current) return;
-
     current.section.id = "current-session";
     current.section.classList.add("is-live");
-
     const card = current.section.querySelector(".card");
     if (card) {
       const badge = document.createElement("div");
@@ -1284,42 +1235,25 @@ header {
       const titleText = current.title.toUpperCase();
       badge.textContent = (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") ? "On Break" : "Now Running";
       card.insertBefore(badge, card.firstChild);
-
-      if (delayModeEnabled) {
-        setStatus("red", delayMinutes);
-      } else if (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") {
-        setStatus("yellow", delayMinutes);
-      } else {
-        setStatus("green", 0);
-      }
+      if (delayModeEnabled) setStatus("red", delayMinutes);
+      else if (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") setStatus("yellow", delayMinutes);
+      else setStatus("green", 0);
     }
-
     current.section.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function showDelayBanner(delayModeEnabled, delayMinutes, currentText) {
     if (!delayBanner || !delayBannerCopy) return;
-    if (!delayModeEnabled) {
-      delayBanner.classList.add("hidden");
-      return;
-    }
+    if (!delayModeEnabled) { delayBanner.classList.add("hidden"); return; }
     delayBanner.classList.remove("hidden");
-    delayBannerCopy.innerHTML =
-      '<strong>Live Schedule Update</strong>' +
-      'The competition is currently running approximately <b>' + delayMinutes + ' minutes behind schedule</b>. ' +
-      (currentText ? 'Current active session: <b>' + currentText + '</b>. ' : '') +
-      'Please allow for slight adjustments to session start times.';
+    delayBannerCopy.innerHTML = '<strong>Live Schedule Update</strong>' + 'The competition is currently running approximately <b>' + delayMinutes + ' minutes behind schedule</b>. ' + (currentText ? 'Current active session: <b>' + currentText + '</b>. ' : '') + 'Please allow for slight adjustments to session start times.';
   }
 
   function findCurrentByTime(items, minutesNow) {
     for (let i = 0; i < items.length; i++) {
-      const thisItem = items[i];
-      const nextItem = items[i + 1];
-      const start = thisItem.minutes;
-      const end = nextItem ? nextItem.minutes : start + 60;
-      if (minutesNow >= start && minutesNow < end) {
-        return thisItem;
-      }
+      const thisItem = items[i], nextItem = items[i + 1];
+      const start = thisItem.minutes, end = nextItem ? nextItem.minutes : start + 60;
+      if (minutesNow >= start && minutesNow < end) return thisItem;
     }
     return null;
   }
@@ -1327,12 +1261,8 @@ header {
   function findCurrentByLiveData(items, liveSectionTime, liveSectionTitle) {
     const wantedTime = (liveSectionTime || "").trim();
     const wantedTitle = normaliseText(liveSectionTitle || "");
-
     if (wantedTime && wantedTitle) {
-      const exact = items.find(item =>
-        item.timeText === wantedTime &&
-        normaliseText(item.title).includes(wantedTitle)
-      );
+      const exact = items.find(item => item.timeText === wantedTime && normaliseText(item.title).includes(wantedTitle));
       if (exact) return exact;
     }
     if (wantedTime) {
@@ -1350,62 +1280,35 @@ header {
     const now = londonNowParts();
     const today = `${now.year}-${now.month}-${now.day}`;
     if (today !== eventDate) return;
-
     const actualNowMinutes = now.hour * 60 + now.minute;
-
-    const items = sections.map((section) => {
+    const items = sections.map(section => {
       const title = section.querySelector(".title")?.textContent?.trim() || "Current session";
       const timeText = section.dataset.time || "";
-      return {
-        section,
-        title,
-        timeText,
-        minutes: parseScheduleTime(timeText)
-      };
+      return { section, title, timeText, minutes: parseScheduleTime(timeText) };
     }).filter(item => item.minutes !== null);
-
     if (!items.length) return;
 
     let liveData = null;
     try {
       const response = await fetch(liveStatusUrl, { cache: "no-store" });
       if (response.ok) liveData = await response.json();
-    } catch (e) {
-      // normal mode fallback
-    }
+    } catch (e) {}
 
-    const delayModeEnabled = !!(
-      liveData &&
-      liveData.current_day === "agenda1" &&
-      liveData.delay_mode_enabled === true &&
-      (liveData.current_section_time || liveData.current_section)
-    );
+    const delayModeEnabled = !!(liveData && liveData.current_day === "agenda1" && liveData.delay_mode_enabled === true && (liveData.current_section_time || liveData.current_section));
 
-    let current = null;
-    let delayMinutes = 0;
-    let currentText = "";
-
+    let current = null, delayMinutes = 0, currentText = "";
     if (delayModeEnabled) {
-      currentText =
-        (liveData.current_section_time ? liveData.current_section_time + " " : "") +
-        (liveData.current_section || "");
+      currentText = (liveData.current_section_time ? liveData.current_section_time + " " : "") + (liveData.current_section || "");
       current = findCurrentByLiveData(items, liveData.current_section_time, liveData.current_section);
-      if (current && typeof current.minutes === "number") {
-        delayMinutes = Math.max(0, actualNowMinutes - current.minutes);
-      }
+      if (current && typeof current.minutes === "number") delayMinutes = Math.max(0, actualNowMinutes - current.minutes);
     }
-
-    if (!current) {
-      current = findCurrentByTime(items, actualNowMinutes);
-    }
+    if (!current) current = findCurrentByTime(items, actualNowMinutes);
 
     if (!current) {
       clearLiveState();
       setStatus("green", 0);
       showDelayBanner(false, 0, "");
-      if (actualNowMinutes < items[0].minutes) {
-        items[0].section.id = "current-session";
-      }
+      if (actualNowMinutes < items[0].minutes) items[0].section.id = "current-session";
       return;
     }
 
@@ -1414,6 +1317,7 @@ header {
   }
 
   init();
+  setInterval(() => { location.reload(); }, 60000);
 })();
 </script>
 
