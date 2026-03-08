@@ -488,6 +488,140 @@ header {
 .container{
   padding-bottom:120px;
 }
+
+/* Café page enhancements */
+.cafe-status-strip{
+  max-width:1060px;
+  margin:0 auto 14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.cafe-status-pill,
+.cafe-meta-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:.92rem;
+  border:1px solid var(--line);
+  background:#fffdfa;
+  color:var(--black);
+}
+.cafe-status-pill{
+  border-color:rgba(179,0,24,0.22);
+}
+.cafe-card-warm{
+  background:linear-gradient(180deg,#fffefc 0%,#fffaf6 100%);
+}
+.stock-list{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.stock-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px 0;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.stock-item:last-child{
+  border-bottom:none;
+}
+.stock-name{
+  font-weight:600;
+}
+.stock-note{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:.8rem;
+  font-weight:800;
+  color:#fff;
+  background:var(--red);
+  white-space:nowrap;
+}
+.stock-item.out{
+  opacity:.55;
+}
+.stock-item.out .stock-name{
+  text-decoration:line-through;
+}
+.cafe-subtitle{
+  margin:0 0 10px;
+  color:var(--muted);
+  font-size:.95rem;
+}
+
+
+/* Final cafe polish */
+.hero-card.cafe-card-warm{
+  position: relative;
+  overflow: hidden;
+}
+.hero-card.cafe-card-warm::after{
+  content:"";
+  position:absolute;
+  inset:auto -40px -40px auto;
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  background:rgba(179,0,24,0.05);
+}
+.hero-kicker{
+  letter-spacing:.08em;
+}
+.cafe-status-strip{
+  justify-content:center;
+}
+.cafe-status-pill,
+.cafe-meta-pill{
+  box-shadow:0 6px 16px rgba(0,0,0,0.04);
+}
+.section .time{
+  font-weight:800;
+}
+.card.cafe-card-warm,
+.card.break-card.cafe-card-warm{
+  border:1px solid rgba(179,0,24,0.10);
+  box-shadow:0 12px 28px rgba(0,0,0,0.05);
+}
+.menu-price{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 12px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid rgba(179,0,24,0.16);
+  color:var(--red-dark);
+  font-weight:800;
+  font-size:.9rem;
+  margin:0 0 12px;
+}
+.stock-list{
+  margin-top:2px;
+}
+.stock-item{
+  background:rgba(255,255,255,0.75);
+}
+.stock-item.out{
+  background:rgba(0,0,0,0.02);
+}
+.stock-name{
+  font-size:.98rem;
+}
+.title{
+  margin-bottom:8px;
+}
+.cafe-subtitle{
+  margin-bottom:12px;
+}
+
 </style>
 </head>
 <body>
@@ -533,29 +667,90 @@ header {
 </nav>
 
 <div class="container">
-  <section class="hero-card">
-    <div class="hero-kicker">Coming Soon</div>
-    <h2>TWDA Café</h2>
+
+  <section class="hero-card cafe-card-warm">
+    <div class="hero-kicker">TWDA Café</div>
+    <h2>Refreshments</h2>
     <div class="hero-divider"></div>
-    <p>This café page is ready for menu items, prices and special offers.</p>
-    <p>You can add drinks, snacks, cakes and event-day offers here.</p>
+    <p>Open throughout the competition day with drinks, snacks, sweets and chocolate available at the venue café.</p>
   </section>
+
+  <div class="cafe-status-strip">
+    <div class="cafe-status-pill">☕ Open 08:00 – 18:00</div>
+    <div class="cafe-meta-pill">💳 Cash & card accepted</div>
+    <div class="cafe-meta-pill">✨ Available throughout the day</div>
+  </div>
 
   <div class="top-divider"></div>
 
   <section class="section">
-    <div class="time break-time">Menu</div>
-    <div class="card break-card">
-      <h2 class="title">Hot drinks, cold drinks, snacks and cakes</h2>
-      <pre class="content">New features coming soon</pre>
+    <div class="time break-time">☕ Hot Drinks</div>
+    <div class="card break-card cafe-card-warm">
+      <h2 class="title">Tea / Coffee</h2>
+      <div class="menu-price">£1.50 each</div>
     </div>
   </section>
 
   <section class="section">
-    <div class="time">Offers</div>
-    <div class="card">
-      <h2 class="title">Special offers</h2>
-      <pre class="content">New features coming soon</pre>
+    <div class="time">🥤 Soft Drinks</div>
+    <div class="card cafe-card-warm">
+      <h2 class="title">Cold Drinks</h2>
+      <div class="menu-price">£1.00 each</div>
+      <ul class="stock-list">
+        <li class="stock-item"><span class="stock-name">Coca-Cola Zero</span></li>
+        <li class="stock-item"><span class="stock-name">Pepsi Max</span></li>
+        <li class="stock-item"><span class="stock-name">7UP Zero</span></li>
+        <li class="stock-item"><span class="stock-name">Fanta</span></li>
+        <li class="stock-item"><span class="stock-name">Rubicon Mango</span></li>
+        <li class="stock-item"><span class="stock-name">Fruit Shoot</span></li>
+        <li class="stock-item"><span class="stock-name">Capri Sun</span></li>
+        <li class="stock-item"><span class="stock-name">Water</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="time break-time">🍪 Snacks</div>
+    <div class="card break-card cafe-card-warm">
+      <h2 class="title">Food and Bakery</h2>
+      <ul class="stock-list">
+        <li class="stock-item"><span class="stock-name">Pot Noodle</span><span class="stock-note">£1.50</span></li>
+        <li class="stock-item"><span class="stock-name">Shortbread / Muffins / Danish</span><span class="stock-note">£1.50</span></li>
+        <li class="stock-item"><span class="stock-name">Croissants / Cookie</span><span class="stock-note">£1.00</span></li>
+        <li class="stock-item"><span class="stock-name">Crisps / Popcorn</span><span class="stock-note">50p</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="time">🍬 Sweets</div>
+    <div class="card cafe-card-warm">
+      <h2 class="title">Sweets and Treats</h2>
+      <ul class="stock-list">
+        <li class="stock-item"><span class="stock-name">Mentos</span><span class="stock-note">£1.00</span></li>
+        <li class="stock-item"><span class="stock-name">Polo</span><span class="stock-note">60p</span></li>
+        <li class="stock-item"><span class="stock-name">Fruitella / Fruit Pastilles</span><span class="stock-note">£1.00</span></li>
+        <li class="stock-item"><span class="stock-name">Mega Pencils</span><span class="stock-note">50p</span></li>
+        <li class="stock-item"><span class="stock-name">Chubba Chubb Lollipops</span><span class="stock-note">50p</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="time break-time">🍫 Chocolate</div>
+    <div class="card break-card cafe-card-warm">
+      <h2 class="title">Chocolate Bars</h2>
+      <div class="menu-price">£1.00 each</div>
+      <ul class="stock-list">
+        <li class="stock-item"><span class="stock-name">KitKat</span></li>
+        <li class="stock-item"><span class="stock-name">Kinder Bueno</span></li>
+        <li class="stock-item"><span class="stock-name">Mars Bar</span></li>
+        <li class="stock-item"><span class="stock-name">Snickers</span></li>
+        <li class="stock-item"><span class="stock-name">Cadbury’s Caramel</span></li>
+        <li class="stock-item"><span class="stock-name">Nutella Bar</span></li>
+        <li class="stock-item"><span class="stock-name">Double Decker</span></li>
+        <li class="stock-item"><span class="stock-name">Crunchie</span></li>
+      </ul>
     </div>
   </section>
 
