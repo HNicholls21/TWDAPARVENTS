@@ -161,7 +161,19 @@ header {
 }
 .break-card {
   border-left-color: var(--black);
-  background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
+  background: linear-gradient(180deg, #f3f3f3 0%, #ffffff 100%);
+  border-top: 2px solid rgba(0,0,0,0.18);
+}
+.break-card .title {
+  letter-spacing: .02em;
+}
+.break-card::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(0,0,0,0.12);
+  margin-top: 12px;
 }
 .break-card::before {
   background: var(--black);
@@ -172,6 +184,7 @@ header {
 }
 .break-badge {
   display: inline-block;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.10);
   margin-bottom: 10px;
   background: #111111;
   color: #ffffff;
@@ -183,6 +196,28 @@ header {
   text-transform: uppercase;
 }
 
+.jump-current{
+  position: fixed;
+  right: 140px;
+  bottom: 18px;
+  z-index: 40;
+  text-decoration: none;
+  color: #ffffff;
+  background: linear-gradient(180deg, #3a3a3a 0%, #111111 100%);
+  border: 1px solid rgba(0,0,0,0.55);
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  line-height: 1;
+  height: 42px;
+  display:flex;
+  align-items:center;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+}
+.jump-current:hover {
+  transform: translateY(-1px);
+}
 .back-to-top {
   position: fixed;
   right: 18px;
@@ -191,12 +226,15 @@ header {
   text-decoration: none;
   color: #ffffff;
   background: linear-gradient(180deg, var(--red) 0%, var(--red-dark) 100%);
-  border: 1px solid var(--red-dark);
   border-radius: 999px;
   padding: 12px 16px;
   font-weight: 800;
   font-size: 0.9rem;
-  box-shadow: 0 10px 24px rgba(179,0,24,00.22);
+  line-height:1;
+  height:42px;
+  display:flex;
+  align-items:center;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
 }
 
 .policy-card {
@@ -256,7 +294,24 @@ header {
   .section { grid-template-columns: 1fr; gap: 8px; }
   .time { position: static; width: fit-content; min-width: 100px; }
   .header-text h1 { font-size: 01.55rem; }
-  .back-to-top { right: 12px; bottom: 12px; padding: 11px 14px; }
+  .back-to-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 40;
+  text-decoration: none;
+  color: #ffffff;
+  background: linear-gradient(180deg, var(--red) 0%, var(--red-dark) 100%);
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  line-height:1;
+  height:42px;
+  display:flex;
+  align-items:center;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+}
 }
 
 
@@ -291,6 +346,16 @@ header {
 }
 
 
+
+@keyframes liveGlowGold {
+  0% { box-shadow: 0 0 0 rgba(212,175,55,0.0); }
+  50% { box-shadow: 0 0 18px rgba(212,175,55,0.45); }
+  100% { box-shadow: 0 0 0 rgba(212,175,55,0.0); }
+}
+.section.is-live .card{
+  animation: liveGlowGold 2.2s ease-in-out infinite;
+  border-left-color:#d4af37;
+}
 </style>
 </head>
 <body>
@@ -867,6 +932,7 @@ header {
   
 </div>
 
+<a class="jump-current" href="#current-session">Current session</a>
 <a class="back-to-top" href="#top">Back to top</a>
 
 
@@ -940,11 +1006,14 @@ header {
 
   if (!current) {
     if (nowMinutes < items[0].minutes) {
+      items[0].section.id = "current-session";
       items[0].section.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     return;
   }
 
+  document.querySelectorAll(".section").forEach(s => s.removeAttribute("id"));
+  current.section.id = "current-session";
   current.section.classList.add("is-live");
   const card = current.section.querySelector(".card");
   if (card && !card.querySelector(".live-badge")) {
