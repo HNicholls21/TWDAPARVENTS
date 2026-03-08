@@ -536,6 +536,93 @@ header {
   }
 }
 
+
+/* Live status pill */
+.live-status-wrap{
+  max-width:1060px;
+  margin:8px auto 12px;
+}
+.live-status-pill{
+  padding:6px 12px;
+  font-weight:600;
+  font-size:0.9rem;
+  border-radius:20px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid transparent;
+}
+.status-green{
+  background:#e9f7ef;
+  color:#1e7e34;
+  border-color:#b7e4c7;
+}
+.status-red{
+  background:#fdecea;
+  color:#b02a37;
+  border-color:#f5c2c7;
+}
+.status-yellow{
+  background:#fff7e6;
+  color:#8a6d3b;
+  border-color:#ffe08a;
+}
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:currentColor;
+}
+@media (max-width:1024px){
+  .live-status-wrap{
+    margin:8px 14px 12px;
+  }
+}
+
+
+/* Mobile status aligned with menu */
+@media (max-width:1024px){
+  .mobile-nav-inner{
+    max-width:1060px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .mobile-nav-button{
+    flex:0 0 auto;
+  }
+  .mobile-nav-status{
+    flex:0 1 auto;
+    min-width:0;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .mobile-nav-status .live-status-pill{
+    margin:0;
+    max-width:none;
+    white-space:nowrap;
+    font-size:0.82rem;
+    padding:6px 10px;
+  }
+  .mobile-nav-toggle:checked ~ .mobile-nav-status{
+    display:none;
+  }
+  /* Hide standalone status block on mobile if present */
+  .live-status-wrap{
+    display:none;
+  }
+}
+@media (min-width:1025px){
+  .mobile-nav-status{
+    display:none;
+  }
+  .live-status-wrap{
+    display:block;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -552,6 +639,12 @@ header {
   <div class="mobile-nav-inner">
     <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" />
     <label for="mobileNavToggle" class="mobile-nav-button">☰ Menu</label>
+    <div class="mobile-nav-status">
+      <div id="mobileLiveStatus" class="live-status-pill status-green">
+        <span class="status-dot"></span>
+        <span>LIVE – On Schedule</span>
+      </div>
+    </div>
     <label for="mobileNavToggle" class="mobile-nav-overlay" aria-hidden="true"></label>
     <aside class="mobile-nav-drawer" aria-label="Mobile site navigation">
       <div class="mobile-nav-header">
@@ -580,6 +673,14 @@ header {
     <a class="site-menu-link" href="agenda3.html">Sunday 22 March</a>
   </div>
 </nav>
+
+<div class="live-status-wrap" id="liveStatusContainer">
+  <div id="liveStatus" class="live-status-pill status-green">
+    <span class="status-dot"></span>
+    <span>LIVE – On Schedule</span>
+  </div>
+</div>
+
 
 <div class="delay-banner hidden" id="delayBanner" aria-live="polite">
   <span class="alert-dot" aria-hidden="true"></span>
@@ -1181,6 +1282,8 @@ header {
   const sections = Array.from(document.querySelectorAll(".section[data-time]"));
   const delayBanner = document.getElementById("delayBanner");
   const delayBannerCopy = document.getElementById("delayBannerCopy");
+  const statusEl = document.getElementById("liveStatus");
+  const mobileStatusEl = document.getElementById("mobileLiveStatus");
 
   function londonNowParts() {
     const parts = new Intl.DateTimeFormat("en-GB", {
@@ -1237,6 +1340,45 @@ header {
     }
 
     return items.find(item => normaliseText(item.title).includes(text)) || null;
+  }
+
+
+
+  function setStatusContent(el, mode, delayMinutes) {
+    if (!el) return;
+    if (mode === "red") {
+      el.className = "live-status-pill status-red";
+      el.innerHTML = '<span class="status-dot"></span><span>LIVE – ' + delayMinutes + ' mins behind</span>';
+      return;
+    }
+    if (mode === "yellow") {
+      el.className = "live-status-pill status-yellow";
+      el.innerHTML = '<span class="status-dot"></span><span>Break in Progress</span>';
+      return;
+    }
+    el.className = "live-status-pill status-green";
+    el.innerHTML = '<span class="status-dot"></span><span>LIVE – On Schedule</span>';
+  }
+
+  function updateStatus(currentItem) {
+    if (!statusEl && !mobileStatusEl) return;
+
+    const title = currentItem ? currentItem.title.toUpperCase() : "";
+
+    if (delayModeEnabled) {
+      setStatusContent(statusEl, "red", scheduleDelayMinutes);
+      setStatusContent(mobileStatusEl, "red", scheduleDelayMinutes);
+      return;
+    }
+
+    if (title.includes("COMFORT BREAK") || title === "LUNCH") {
+      setStatusContent(statusEl, "yellow", scheduleDelayMinutes);
+      setStatusContent(mobileStatusEl, "yellow", scheduleDelayMinutes);
+      return;
+    }
+
+    setStatusContent(statusEl, "green", scheduleDelayMinutes);
+    setStatusContent(mobileStatusEl, "green", scheduleDelayMinutes);
   }
 
   function findCurrentByTime(items, minutesNow) {
@@ -1297,6 +1439,8 @@ header {
     const oldBadge = s.querySelector(".live-badge");
     if (oldBadge) oldBadge.remove();
   });
+
+  updateStatus(current);
 
   // Banner only appears in delay mode
   if (delayModeEnabled && delayBanner && delayBannerCopy) {
