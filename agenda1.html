@@ -485,26 +485,55 @@ header {
 }
 
 
-/* Delay notice banner */
+
+/* Dynamic live delay banner */
+.delay-banner.hidden{
+  display:none;
+}
 .delay-banner{
   max-width:1060px;
   margin:0 auto 10px;
-  padding:14px 16px;
-  background:#f3f3f3;
+  padding:12px 16px;
+  background:linear-gradient(180deg,#fff6f6 0%,#f3f3f3 100%);
+  border:1px solid rgba(0,0,0,0.12);
   border-left:6px solid #d00000;
-  border-right:2px solid #000;
-  border-top:2px solid #000;
-  border-bottom:2px solid #000;
-  border-radius:8px;
+  border-radius:10px;
   font-weight:600;
   position:sticky;
   top:72px;
   z-index:60;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.06);
 }
 .delay-banner strong{
   display:block;
-  font-size:1.05rem;
-  margin-bottom:4px;
+  font-size:1rem;
+  margin:0 0 2px;
+}
+.delay-banner-copy{
+  line-height:1.45;
+}
+.alert-dot{
+  width:12px;
+  height:12px;
+  min-width:12px;
+  border-radius:50%;
+  background:#d00000;
+  animation:alertPulse 1.8s ease-in-out infinite;
+}
+@keyframes alertPulse{
+  0%{ box-shadow:0 0 0 0 rgba(208,0,0,0.35); }
+  70%{ box-shadow:0 0 0 10px rgba(208,0,0,0); }
+  100%{ box-shadow:0 0 0 0 rgba(208,0,0,0); }
+}
+@media (max-width:1024px){
+  .delay-banner{
+    top:62px;
+    margin:0 14px 10px;
+    align-items:flex-start;
+  }
 }
 
 </style>
@@ -552,15 +581,13 @@ header {
   </div>
 </nav>
 
-
-<!-- DELAY_BANNER_START
-Uncomment this block to enable the delay notice during the competition.
-<div class="delay-banner">
-<strong>Schedule Update</strong>
-The competition is currently running approximately <b>30 minutes behind schedule</b>.
-Please allow for slight adjustments to session start times.
+<div class="delay-banner hidden" id="delayBanner" aria-live="polite">
+  <span class="alert-dot" aria-hidden="true"></span>
+  <div class="delay-banner-copy" id="delayBannerCopy">
+    <strong>Live Schedule Update</strong>
+    Delay information will appear here when enabled.
+  </div>
 </div>
-DELAY_BANNER_END -->
 
 
 
@@ -1123,11 +1150,35 @@ DELAY_BANNER_END -->
 
 
 
+
 <script>
 (function () {
   const eventDate = "2026-03-08";
+
+  /*
+    LIVE DELAY SETTINGS
+    -------------------
+    Leave these values as they are for normal operation.
+
+    To simulate a delay in GitHub, edit ONLY the 4 lines below.
+
+    Example:
+    delayModeEnabled = true
+    currentActiveSessionText = "10.40 TOTS/A NOVICE/A LYRICAL"
+    scheduleDelayMinutes = 60
+    forcedPreviewTime = "11.50"
+
+    On the live site, forcedPreviewTime should usually stay blank.
+  */
+  const delayModeEnabled = false;
+  const currentActiveSessionText = "";
+  const scheduleDelayMinutes = 0;
+  const forcedPreviewTime = "";
+
   const tz = "Europe/London";
   const sections = Array.from(document.querySelectorAll(".section[data-time]"));
+  const delayBanner = document.getElementById("delayBanner");
+  const delayBannerCopy = document.getElementById("delayBannerCopy");
 
   function londonNowParts() {
     const parts = new Intl.DateTimeFormat("en-GB", {
@@ -1160,11 +1211,19 @@ DELAY_BANNER_END -->
     return hour * 60 + minute;
   }
 
-  const now = londonNowParts();
-  const today = `${now.year}-${now.month}-${now.day}`;
-  if (today !== eventDate) return;
+  let now = londonNowParts();
+  if (forcedPreviewTime) {
+    const bits = forcedPreviewTime.split(".");
+    now.hour = parseInt(bits[0], 10);
+    now.minute = parseInt(bits[1], 10);
+  }
 
-  const nowMinutes = now.hour * 60 + now.minute;
+  const today = `${now.year}-${now.month}-${now.day}`;
+  if (today !== eventDate && !forcedPreviewTime) return;
+
+  const actualNowMinutes = now.hour * 60 + now.minute;
+  const nowMinutes = actualNowMinutes - (delayModeEnabled ? scheduleDelayMinutes : 0);
+
   const items = sections.map((section) => {
     const title = section.querySelector(".title")?.textContent?.trim() || "Current session";
     const timeText = section.dataset.time || "";
@@ -1190,6 +1249,24 @@ DELAY_BANNER_END -->
     }
   }
 
+  document.querySelectorAll(".section").forEach(s => {
+    s.classList.remove("is-live");
+    if (s.id === "current-session") s.removeAttribute("id");
+  });
+
+  if (delayModeEnabled && delayBanner && delayBannerCopy) {
+    delayBanner.classList.remove("hidden");
+    delayBannerCopy.innerHTML =
+      `<strong>Live Schedule Update</strong>` +
+      `The competition is currently running approximately <b>${scheduleDelayMinutes} minutes behind schedule</b>. ` +
+      (currentActiveSessionText
+        ? `Current active session: <b>${currentActiveSessionText}</b>. `
+        : ``) +
+      `Please allow for slight adjustments to session start times.`;
+  } else if (delayBanner) {
+    delayBanner.classList.add("hidden");
+  }
+
   if (!current) {
     if (nowMinutes < items[0].minutes) {
       items[0].section.id = "current-session";
@@ -1198,7 +1275,6 @@ DELAY_BANNER_END -->
     return;
   }
 
-  document.querySelectorAll(".section").forEach(s => s.removeAttribute("id"));
   current.section.id = "current-session";
   current.section.classList.add("is-live");
   const card = current.section.querySelector(".card");
@@ -1217,6 +1293,7 @@ DELAY_BANNER_END -->
   current.section.scrollIntoView({ behavior: "smooth", block: "start" });
 })();
 </script>
+
 
 
 
