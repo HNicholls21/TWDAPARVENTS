@@ -199,6 +199,57 @@ header {
   box-shadow: 0 10px 24px rgba(179,0,24,0.22);
 }
 
+.policy-card {
+  background: linear-gradient(180deg, #fff7f7 0%, #ffffff 100%);
+  border: 1px solid #f0d2d7;
+  border-left: 6px solid var(--red);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.policy-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+  color: var(--black);
+}
+.policy-card p {
+  margin: 0;
+  line-height: 1.7;
+  color: #222;
+}
+.section.is-live .card {
+  border-left-color: var(--black);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.10);
+}
+
+@keyframes liveGlow {
+  0% { box-shadow: 0 16px 34px rgba(0,0,0,0.10), 0 0 0 rgba(179,0,24,0.00); }
+  50% { box-shadow: 0 16px 34px rgba(0,0,0,0.12), 0 0 22px rgba(179,0,24,0.18); }
+  100% { box-shadow: 0 16px 34px rgba(0,0,0,0.10), 0 0 0 rgba(179,0,24,0.00); }
+}
+.section.is-live .card {
+  animation: liveGlow 2.4s ease-in-out infinite;
+}
+
+.section.is-live .card::before {
+  background: var(--black);
+}
+.section.is-live .time {
+  background: linear-gradient(180deg, #1f1f1f 0%, #000000 100%);
+}
+.live-badge {
+  display: inline-block;
+  margin-bottom: 10px;
+  background: var(--red);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
 .footer { text-align: center; color: var(--muted); font-size: 0.93rem; padding-top: 12px; }
 
 @media (max-width: 860px) {
@@ -207,6 +258,38 @@ header {
   .header-text h1 { font-size: 1.55rem; }
   .back-to-top { right: 12px; bottom: 12px; padding: 11px 14px; }
 }
+
+
+.policy-banner {
+  background: linear-gradient(180deg, #fff6f7 0%, #ffffff 100%);
+  border: 1px solid #f0d2d7;
+  border-left: 6px solid var(--red);
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+.policy-banner strong {
+  color: #000000;
+}
+.policy-banner p {
+  margin: 0;
+  line-height: 1.65;
+  color: #222;
+}
+
+
+
+
+
+
+.sub-line{
+  border:none;
+  border-top:1px solid rgba(0,0,0,0.18);
+  margin:6px 0 6px;
+  width:100%;
+}
+
 
 </style>
 </head>
@@ -237,91 +320,168 @@ header {
     <div class="hero-divider"></div>
     <p>Adjudicator: Leigh-Ann James FABD Examiner</p>
   </section>
+<p class="live-status-text"></p>
+  </div>
+
+  <section class="policy-banner" aria-label="Photo and video policy reminder">
+    <p><strong>🚫📷 No photography or videography permitted.</strong> To protect all performers, families and schools, no photos or videos may be taken at any time during the competition.</p>
+  </section>
   <div class="top-divider"></div>
 
   
 
-  <section class="section" id="start">
+  <section class="section" id="start" data-time="8.30">
   <div class="time">8.30</div>
   <div class="card">
     <h2 class="title">Tots/Primary/Junior Modern Trios</h2>
-    <pre class="content">TOTS 1.R.JONES M.JOSEPH E CASLEY PRIMARY: 2.H.HENNESSY A FARRELL A LEWIS
-3.A GOLDSMITH F MULHERN E CHALLICE 4.K MACHIGANI E SILVER J SCOTT
-JUNIOR:5.I DAVIES S FARR P FROGGATT 6.S SILVER E VERNON M CUNNINGHAM
-7.M TRUEMAN M BOODINGTON D HARRIS 8.A SALUTSKA A BUCHANNAN S NOBLE
-9.G WORKMAN E BROWN D STANTON 10.M.CLAY T DAVIS K LUGAR
-11.A CURTIS B GOODBURN S NOBLE 12.D CORSER E ROGERS L VAUGHAN</pre>
+    <pre class="content"><strong>TOTS:</strong>
+1.R.JONES M.JOSEPH E CASLEY
+<hr class="sub-line">
+<strong>PRIMARY:</strong>
+2.H.HENNESSY A FARRELL A LEWIS
+3.A GOLDSMITH F MULHERN E CHALLICE
+4.K MACHIGANI E SILVER J SCOTT
+<hr class="sub-line">
+<strong>JUNIOR:</strong>
+5.I DAVIES S FARR P FROGGATT
+6.S SILVER E VERNON M CUNNINGHAM
+7.M TRUEMAN M BOODINGTON D HARRIS
+8.A SALUTSKA A BUCHANNAN S NOBLE
+9.G WORKMAN E BROWN D STANTON
+10.M.CLAY T DAVIS K LUGAR
+11.A CURTIS B GOODBURN S NOBLE
+12.D CORSER E ROGERS L VAUGHAN</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="9.00">
   <div class="time">9.00</div>
   <div class="card">
     <h2 class="title">C/D NOVICE/D BALLET SOLO</h2>
-    <pre class="content">C:1.IRIS ADAMS 2.REBECCA LEWIS 3 .MAISIE BODDINGTON
-4.DARCEY HARRIS D NOVICE: 5.ROSEY FIELDS D:6.CONNIE ADAMS</pre>
+    <pre class="content"><strong>C:</strong>
+1.IRIS ADAMS
+2.REBECCA LEWIS 3 .MAISIE BODDINGTON
+4.DARCEY HARRIS
+<hr class="sub-line">
+<strong>D NOVICE:</strong>
+5.ROSEY FIELDS
+<hr class="sub-line">
+<strong>D:</strong>
+6.CONNIE ADAMS</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="9.20">
   <div class="time">9.20</div>
   <div class="card">
     <h2 class="title">TOTS/A NOVICE/A TAP SOLO</h2>
-    <pre class="content">TOTS:1. REEVA THOMAS 2.MILLIE MCEVOY A NOVICE:3.LILY SUFFOLK 4.ELSIE PERKS
-5.ALANNAH GAMBLE A:6.NANCY BENNETT 7.HARPER HENNESSY</pre>
+    <pre class="content"><strong>TOTS:</strong>
+1. REEVA THOMAS
+2.MILLIE MCEVOY
+<hr class="sub-line">
+<strong>A NOVICE:</strong>
+3.LILY SUFFOLK
+4.ELSIE PERKS
+5.ALANNAH GAMBLE
+<hr class="sub-line">
+<strong>A:</strong>
+6.NANCY BENNETT
+7.HARPER HENNESSY</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="9.35">
   <div class="time">9.35</div>
   <div class="card">
     <h2 class="title">INTER MODERN DUETS</h2>
-    <pre class="content">1.K CAVES H GUEST 2.B HOPPNER K GHAG 3.A PRINCE R MAXWELL 4.A GUEST M TURNER
-5.A WILLIAMS P GAUNTLETT 6.E BARLOW A GUEST 7.E ROBSON E EDWARDS</pre>
+    <pre class="content">1.K CAVES H GUEST
+2.B HOPPNER K GHAG
+3.A PRINCE R MAXWELL
+4.A GUEST M TURNER
+5.A WILLIAMS P GAUNTLETT
+6.E BARLOW A GUEST
+7.E ROBSON E EDWARDS</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="9.55">
   <div class="time">9.55</div>
   <div class="card">
     <h2 class="title">TOTS/PRIMARY/JUNIOR TAP TROUPE</h2>
-    <pre class="content">TOTS:1. JSSD-CARTOON HEROES (15)
-PRIMARY: 2..JSSD- POSTMAN PAT
-JUNIOR:3.JSSD-IN THE MOOD (8) 4.JSSD-MAMA MIA (25)</pre>
+    <pre class="content"><strong>TOTS:</strong>
+1. JSSD-CARTOON HEROES (15)
+<hr class="sub-line">
+<strong>PRIMARY:</strong>
+2..JSSD- POSTMAN PAT
+<hr class="sub-line">
+<strong>JUNIOR:</strong>
+3.JSSD-IN THE MOOD (8)
+4.JSSD-MAMA MIA (25)</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="10.20">
   <div class="time">10.20</div>
   <div class="card">
     <h2 class="title">E NOVICE/E/F/G BALLET SOLO</h2>
-    <pre class="content">E NOVICE:1.ISABELLE PALMER E.2.BELLA HOPPNER 3.ESMAI ALLEN 4.KOREY GHAG
+    <pre class="content"><strong>E NOVICE:</strong>
+1.ISABELLE PALMER
+<hr class="sub-line">
+<strong>E:</strong>
+2.BELLA HOPPNER
+3.ESMAI ALLEN
+4.KOREY GHAG
 5.ELLIE ROBSON
-F:6.AMIE TOPHAM 7.LACIE HYKIN-EDWARDS 8.DAISY THOMAS 9.ISABELLE ALEXANDER 10.ERIN WALSH
-G: 11.RHIANNON LAWRENCE</pre>
+<hr class="sub-line">
+<strong>F:</strong>
+6.AMIE TOPHAM
+7.LACIE HYKIN-EDWARDS
+8.DAISY THOMAS
+9.ISABELLE ALEXANDER
+10.ERIN WALSH
+<hr class="sub-line">
+<strong>G:</strong>
+11.RHIANNON LAWRENCE</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="10.40">
   <div class="time">10.40</div>
   <div class="card">
     <h2 class="title">TOTS/A NOVICE/A LYRICAL</h2>
-    <pre class="content">TOTS:1.LIBBY TOMKINSON 2.MOLLY JOSEPHS A NOVICE: 3.LILY SUFFOLK
-4.LAYLA HALL 5.ELSIE PERKS 6.ROBERTA ENE A:7.FLORENCE BLOMFIELD
-8.NANCY BENNETT 9.PHEOBE SOPHER 10.HARPER HENNESSY</pre>
+    <pre class="content"><strong>TOTS:</strong>
+1.LIBBY TOMKINSON
+2.MOLLY JOSEPHS
+<hr class="sub-line">
+<strong>A NOVICE:</strong>
+3.LILY SUFFOLK
+4.LAYLA HALL
+5.ELSIE PERKS
+6.ROBERTA ENE
+<hr class="sub-line">
+<strong>A:</strong>
+7.FLORENCE BLOMFIELD
+8.NANCY BENNETT
+9.PHEOBE SOPHER
+10.HARPER HENNESSY</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="11.00">
   <div class="time">11.00</div>
   <div class="card">
     <h2 class="title">D  NOVICE CONTEMPORARY SOLO</h2>
-    <pre class="content">1.MILLIE PEVERELLI 2.LACEY RAYBONE 3.CIENNA MEIKLE 4.BILLY MORRIS-STEELE
-5.LOLA FOTHERGILL 6.LILY-ROSE COPPIN 7.AMELIA LANGHOR</pre>
+    <pre class="content">1.MILLIE PEVERELLI
+2.LACEY RAYBONE
+3.CIENNA MEIKLE
+4.BILLY MORRIS-STEELE
+5.LOLA FOTHERGILL
+6.LILY-ROSE COPPIN
+7.AMELIA LANGHOR</pre>
   </div>
 </section>
 
-  <section class="section" id="comfortbreak1120">
+  <section class="section" id="comfortbreak1120" data-time="11.20">
   <div class="time break-time">11.20</div>
   <div class="card break-card">
     <div class="break-badge">Comfort Break</div><h2 class="title">COMFORT BREAK</h2>
@@ -329,48 +489,81 @@ G: 11.RHIANNON LAWRENCE</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="11.25">
   <div class="time">11.25</div>
   <div class="card">
     <h2 class="title">F NOVICE/ F &amp; G MODERN SOLOS</h2>
-    <pre class="content">F:1.JESSICA PURNELL 2.AMIE TOPHAM 3.LACIE HYKIN-EDWARDS 4.CORDELIA SEEDS
-5.KRISTEN ANDERSON 6.DAISY THOMAS 7.ISABELLE ALEXANDER 8.ISABEL GROVE
-F NOVICE 9.SOPHIE SILKE
-G:1RUBY PERNELL 2.LOLA JONES 3.RHIANNON LAWRENCE</pre>
+    <pre class="content"><strong>F:</strong>
+1.JESSICA PURNELL
+2.AMIE TOPHAM
+3.LACIE HYKIN-EDWARDS
+4.CORDELIA SEEDS
+5.KRISTEN ANDERSON
+6.DAISY THOMAS
+7.ISABELLE ALEXANDER
+8.ISABEL GROVE
+<hr class="sub-line">
+<strong>F NOVICE:</strong>
+9.SOPHIE SILKE
+<hr class="sub-line">
+<strong>G:</strong>
+1RUBY PERNELL
+2.LOLA JONES
+3.RHIANNON LAWRENCE</pre>
   </div>
 </section>
 
-  <section class="section" id="afternoon">
+  <section class="section" id="afternoon" data-time="12.00">
   <div class="time">12.00</div>
   <div class="card">
     <h2 class="title">TOTS/PRIMARY/JUNIOR TAP DUETS</h2>
-    <pre class="content">TOTS: 1.R THOMAS M JOSEPHS
-PRIMARY:2.A FARRELL H HENNESSY 3.P SOPHER F BLOMFIELD
-JUNIOR: 4.D CORSER L VAUGHAN 5.E ROGERS I EDWARDS 6.M TRUEMAN M BODDINGTON</pre>
+    <pre class="content"><strong>TOTS:</strong>
+1.R THOMAS M JOSEPHS
+<hr class="sub-line">
+<strong>PRIMARY:</strong>
+2.A FARRELL H HENNESSY
+3.P SOPHER F BLOMFIELD
+<hr class="sub-line">
+<strong>JUNIOR:</strong>
+4.D CORSER L VAUGHAN
+5.E ROGERS I EDWARDS
+6.M TRUEMAN M BODDINGTON</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="12.15">
   <div class="time">12.15</div>
   <div class="card">
     <h2 class="title">INTER &amp; SENIOR MODERN TRIOS</h2>
-    <pre class="content">INTER:1.E ROBSON H GUEST R SAVAGE 2.G STANLEY I PENDER N TWEED
+    <pre class="content"><strong>INTER:</strong>
+1.E ROBSON H GUEST R SAVAGE
+2.G STANLEY I PENDER N TWEED
 3.A PRINCE R MAXWELL M TURNER
-SENIOR: 1. A TOPHAM B HOPPNER K GHAG 2.K.ANDERSON T MOYENS H BYRNE
-3.S WATSON F WISEMAN S SILKE 4.A TOPHAM J PURNELL B HOPPNER</pre>
+<hr class="sub-line">
+<strong>SENIOR:</strong>
+1. A TOPHAM B HOPPNER K GHAG
+2.K.ANDERSON T MOYENS H BYRNE
+3.S WATSON F WISEMAN S SILKE
+4.A TOPHAM J PURNELL B HOPPNER</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="12.35">
   <div class="time">12.35</div>
   <div class="card">
     <h2 class="title">B LYRICAL SOLO</h2>
-    <pre class="content">1.SOPHIE ODEMWINGE 2.GRACIE-MAE BURNS 3.GRACE WORKMAN 4.QUINN ANDERSON
-5.ESME BROWN 6.DAISY STANTON 7.HARRIET PHILLIPS 8.ESMAE VERNON</pre>
+    <pre class="content">1.SOPHIE ODEMWINGE
+2.GRACIE-MAE BURNS
+3.GRACE WORKMAN
+4.QUINN ANDERSON
+5.ESME BROWN
+6.DAISY STANTON
+7.HARRIET PHILLIPS
+8.ESMAE VERNON</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="12.55">
   <div class="time">12.55</div>
   <div class="card">
     <h2 class="title">PRIMARY LYRICAL TROUPE</h2>
@@ -378,7 +571,7 @@ SENIOR: 1. A TOPHAM B HOPPNER K GHAG 2.K.ANDERSON T MOYENS H BYRNE
   </div>
 </section>
 
-  <section class="section" id="lunch100">
+  <section class="section" id="lunch100" data-time="1.00">
   <div class="time break-time">1.00</div>
   <div class="card break-card">
     <div class="break-badge">Lunch</div><h2 class="title">LUNCH</h2>
@@ -386,174 +579,284 @@ SENIOR: 1. A TOPHAM B HOPPNER K GHAG 2.K.ANDERSON T MOYENS H BYRNE
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="1.30">
   <div class="time">1.30</div>
   <div class="card">
     <h2 class="title">INTER ACRO TROUPE</h2>
-    <pre class="content">1.DAZZLERS-ALICE (16) 2.NOUVEAU-POLAR EXPRESS (11) 3.DAZZLERS-  AIR (22)
-4.JSSD-STARLIGHT EXPRESS (16) 5.DAZZLERS- WELCOME TO THE CIRCUS (25)</pre>
+    <pre class="content">1.DAZZLERS-ALICE (16)
+2.NOUVEAU-POLAR EXPRESS (11)
+3.DAZZLERS-  AIR (22)
+4.JSSD-STARLIGHT EXPRESS (16)
+5.DAZZLERS- WELCOME TO THE CIRCUS (25)</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="2.00">
   <div class="time">2.00</div>
   <div class="card">
     <h2 class="title">TOTS/A NOVICE/A /B BALLET SOLO</h2>
-    <pre class="content">TOTS:1.MILLIE MCEVOY 2.LEXI HALL
-A NOVICE: 3.BEATRICE LARAWAY 4.LAYLA HALL
-A:5.HARPER HENNESSY 6.ANNIE FARRELL 7.PIXIE-MAY RODEN – WOOD
-B:1.HARRIET PHILLIPS 2.DIANA LUI</pre>
+    <pre class="content"><strong>TOTS:</strong>
+1.MILLIE MCEVOY
+2.LEXI HALL
+<hr class="sub-line">
+<strong>A NOVICE:</strong>
+3.BEATRICE LARAWAY
+4.LAYLA HALL
+<hr class="sub-line">
+<strong>A:</strong>
+5.HARPER HENNESSY
+6.ANNIE FARRELL
+7.PIXIE-MAY RODEN – WOOD
+<hr class="sub-line">
+<strong>B:</strong>
+1.HARRIET PHILLIPS
+2.DIANA LUI</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="2.20">
   <div class="time">2.20</div>
   <div class="card">
     <h2 class="title">C NOVICE/C MODERN SOLO</h2>
-    <pre class="content">C NOVICE:1.CARLY GIBSON 2.EMMIE BATEMAN 3.LILY CREW
-C: 4.IRIS ADAMS 5.SCARLETT FARR 6.REBECCA LEWIS 7.JESSICA THOMLOW
-8.ELSIE-MAY BARLOW 9.ROSA WHITE 10.DAISY CORSER 11.MAISY TRUEMAN 12.EVIE DESA</pre>
+    <pre class="content"><strong>C NOVICE:</strong>
+1.CARLY GIBSON
+2.EMMIE BATEMAN
+3.LILY CREW
+<hr class="sub-line">
+<strong>C:</strong>
+4.IRIS ADAMS
+5.SCARLETT FARR
+6.REBECCA LEWIS
+7.JESSICA THOMLOW
+8.ELSIE-MAY BARLOW
+9.ROSA WHITE
+10.DAISY CORSER
+11.MAISY TRUEMAN
+12.EVIE DESA</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="2.50">
   <div class="time">2.50</div>
   <div class="card">
     <h2 class="title">F NOVICE /F/G CONTEMPORARY SOLO</h2>
-    <pre class="content">F NOVICE: 1. ISABEL COTTERILL
-F:1.KARLA DOYLE 2.ISABELLE ALEXANDER 3.KRISTEN ANDERSON 4.DAISY THOMAS
-5.ISABEL GROVE 6.ALEENA MATIN 7.JESSICA PURNELL 8.CORDELIA SEEDS
+    <pre class="content"><strong>F NOVICE:</strong>
+1. ISABEL COTTERILL
+<hr class="sub-line">
+<strong>F:</strong>
+1.KARLA DOYLE
+2.ISABELLE ALEXANDER
+3.KRISTEN ANDERSON
+4.DAISY THOMAS
+5.ISABEL GROVE
+6.ALEENA MATIN
+7.JESSICA PURNELL
+8.CORDELIA SEEDS
 9.AMIE TOPHAM
-G:1.ELLIE-JAYNE EARP 2.LOLA JONES 3.RHIANNON LAWRENCE</pre>
+<hr class="sub-line">
+<strong>G:</strong>
+1.ELLIE-JAYNE EARP
+2.LOLA JONES
+3.RHIANNON LAWRENCE</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="3.20">
   <div class="time">3.20</div>
   <div class="card">
     <h2 class="title">INTER LYRICAL DUETS</h2>
-    <pre class="content">1.B MORRIS-STEELE G STANLEY 2.A PRINCE R MAXWELL 3.E HODGES R FIELDS
-4.K GHAG B HOPPNER 5.L RAYBONE A HANLEY 6.O MCLEMON E BARLOW
-7.R SAVAGE E ROBSON 8.A LABUDEK-BOULD G HARPER 9.B MORRIS-STEELE E HODGES</pre>
+    <pre class="content">1.B MORRIS-STEELE G STANLEY
+2.A PRINCE R MAXWELL
+3.E HODGES R FIELDS
+4.K GHAG B HOPPNER
+5.L RAYBONE A HANLEY
+6.O MCLEMON E BARLOW
+7.R SAVAGE E ROBSON
+8.A LABUDEK-BOULD G HARPER
+9.B MORRIS-STEELE E HODGES</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="3.50">
   <div class="time">3.50</div>
   <div class="card">
     <h2 class="title">PRIMARY &amp; JUNIOR ACRO TRIOS</h2>
-    <pre class="content">PRIMARY:1.P SOPHER A EAST E HOUGHTON 2.A GOLDSMITH F MULHERN E CHALLICE
+    <pre class="content"><strong>PRIMARY:</strong>
+1.P SOPHER A EAST E HOUGHTON
+2.A GOLDSMITH F MULHERN E CHALLICE
 3.K MACHIGANI J SCOTT E SILVER
-JUNIOR: 1.A SALUTSKA A BUCHANNAN S NOBLE 2.S GENT G BURNS H PERKINS
-3.M CLAY T DAVIS K LUGER 4.B BURKE C HANAPHY L CREW
-5.A CURTIS B GOODBURN S NOBLE  6.D CORSER L VAUGHAN C ALLT
+<hr class="sub-line">
+<strong>JUNIOR:</strong>
+1.A SALUTSKA A BUCHANNAN S NOBLE
+2.S GENT G BURNS H PERKINS
+3.M CLAY T DAVIS K LUGER
+4.B BURKE C HANAPHY L CREW
+5.A CURTIS B GOODBURN S NOBLE
+6.D CORSER L VAUGHAN C ALLT
 7.S.SILVER E VERNON M CUNNINGHAM</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="4.15">
   <div class="time">4.15</div>
   <div class="card">
     <h2 class="title">SENIOR &amp; OPEN CLASSICAL SMALL GROUPS</h2>
-    <pre class="content">SENIOR:1.FUNKY FEET- QUARTET (4)
-OPEN:1.SUTTON STAGE SCHOOL- SPANISH (4) 2.TWDA-PA- PEAKY (6)
+    <pre class="content"><strong>SENIOR:</strong>
+1.FUNKY FEET- QUARTET (4)
+<hr class="sub-line">
+<strong>OPEN:</strong>
+1.SUTTON STAGE SCHOOL- SPANISH (4)
+2.TWDA-PA- PEAKY (6)
 3.JSSD-MALEFICENT (6)</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="4.45">
   <div class="time">4.45</div>
   <div class="card">
     <h2 class="title">JUNIOR LYRICAL SMALL GROUP</h2>
-    <pre class="content">1. FUNKY-FEET-I’LL BE THERE (6) 2.JSSD- TEARS OF AN ANGEL (6)
+    <pre class="content">1. FUNKY-FEET-I’LL BE THERE (6)
+2.JSSD- TEARS OF AN ANGEL (6)
 3.DAZZLERS (6)</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="5.05">
   <div class="time">5.05</div>
   <div class="card">
     <h2 class="title">D NOVICE &amp; OPEN ACRO SOLO</h2>
-    <pre class="content">NOVICE:1.OLIVIA FENTON 2.MILLIE PEVERELLI 3.EMILY HODGES 4.LILY-ROSE COPPIN
-D:1.LOLA FOTHERGILL 2.AVA LEIGH GUEST 3.ISABELLA PENDER 4.POPPY BIRCH
-5.CIENNA MEIKLE 6.LACEY RAYBONE 7.LILY-MAE JACKSON-FRANKS 8.GRACIE STANLEY
+    <pre class="content"><strong>NOVICE:</strong>
+1.OLIVIA FENTON
+2.MILLIE PEVERELLI
+3.EMILY HODGES
+4.LILY-ROSE COPPIN
+<hr class="sub-line">
+<strong>D:</strong>
+1.LOLA FOTHERGILL
+2.AVA LEIGH GUEST
+3.ISABELLA PENDER
+4.POPPY BIRCH
+5.CIENNA MEIKLE
+6.LACEY RAYBONE
+7.LILY-MAE JACKSON-FRANKS
+8.GRACIE STANLEY
 9.AURORA HANLEY</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="5.30">
   <div class="time">5.30</div>
   <div class="card">
     <h2 class="title">E TAP SOLO</h2>
-    <pre class="content">1. MIA D’AMBROSIO 2.KOREY GHAG 3.BELLA HOPPNER 4.ESMAI ALLEN
-5.MEGAN WEBSTER 6.MAISIE TURNER</pre>
+    <pre class="content">1. MIA D’AMBROSIO
+2.KOREY GHAG
+3.BELLA HOPPNER
+4.ESMAI ALLEN
+5.MEGAN WEBSTER
+6.MAISIE TURNER</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="5.50">
   <div class="time">5.50</div>
   <div class="card">
     <h2 class="title">D/E NOVICE/E CONTEMPORARY SOLO</h2>
-    <pre class="content">D:1.ORLA MCLEMON 2.EMMIE EDWARDS 3.AVA LABUDEK-BOULD 4.RUBY SAVAGE
-E NOVICE:1.LILLY ANN WHITAKER
-E:1.KOREY GHAG 2.HATTIE BYRNE 3.HOLLY GUEST 4.OLIVIA MALTBY</pre>
+    <pre class="content"><strong>D:</strong>
+1.ORLA MCLEMON
+2.EMMIE EDWARDS
+3.AVA LABUDEK-BOULD
+4.RUBY SAVAGE
+<hr class="sub-line">
+<strong>E NOVICE:</strong>
+1.LILLY ANN WHITAKER
+<hr class="sub-line">
+<strong>E:</strong>
+1.KOREY GHAG
+2.HATTIE BYRNE
+3.HOLLY GUEST
+4.OLIVIA MALTBY</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="6.15">
   <div class="time">6.15</div>
   <div class="card">
     <h2 class="title"> JUNIOR CABARET SMALL GROUP</h2>
-    <pre class="content">1.FUNKY FEET- A BUSHELL &amp; A PECK (6) 2.NOUVEAU – CHOO CHOO CHA BOOGIE (5)
+    <pre class="content">1.FUNKY FEET- A BUSHELL &amp; A PECK (6)
+2.NOUVEAU – CHOO CHOO CHA BOOGIE (5)
 3.FUNKY FEET- NAUGHTY (6)</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="6.30">
   <div class="time">6.30</div>
   <div class="card">
     <h2 class="title">SENIOR &amp; OPEN CONTEMPORARY TROUPES</h2>
-    <pre class="content">SENIOR SMALL GROUP:1.FUNKY FEET-SEND IN THE CLOWNS (5)
-SENIOR : 1.JSSD-MAKEBA (7) 2.FUNKY FEET- TO BUILD A HOME (9)
+    <pre class="content"><strong>SENIOR SMALL GROUP:</strong>
+1.FUNKY FEET-SEND IN THE CLOWNS (5)
+<hr class="sub-line">
+<strong>SENIOR:</strong>
+1.JSSD-MAKEBA (7)
+2.FUNKY FEET- TO BUILD A HOME (9)
 3.JSSD-SCIENTISTS (9)
-OPEN: 1.SUTTON STAGE SCHOOL- WRITINGS ON THE WALL (10)
+<hr class="sub-line">
+<strong>OPEN:</strong>
+1.SUTTON STAGE SCHOOL- WRITINGS ON THE WALL (10)
 2.JSSD- SAILOR (12)</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="7.10">
   <div class="time">7.10</div>
   <div class="card">
     <h2 class="title">SENIOR LYRICAL DUETS</h2>
-    <pre class="content">1.A TOPHAM K GHAG 2.L HYKIN-EDWARDS I WATKINS 3..A BROOME K DOYLE
-4.K ANDERSON T MOYENS 5.D THOMAS L KEAY 6.B HOPPNER A TOPHAM
-7.N LITTLE I COTTERILL 8.A LABUDEK-BOULD I ALEXANDER</pre>
+    <pre class="content">1.A TOPHAM K GHAG
+2.L HYKIN-EDWARDS I WATKINS
+3..A BROOME K DOYLE
+4.K ANDERSON T MOYENS
+5.D THOMAS L KEAY
+6.B HOPPNER A TOPHAM
+7.N LITTLE I COTTERILL
+8.A LABUDEK-BOULD I ALEXANDER</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="7.30">
   <div class="time">7.30</div>
   <div class="card">
     <h2 class="title">INTER /SENIOR/ OPEN TAP DUETS</h2>
-    <pre class="content">INTER: 1.E BARLOW N MAXWELL 2.K GHAG B HOPPNER 3.R SAVAGE E EDWARDS
-SENIOR:1.K GHAG A TOPHAM
-OPEN:1.I ALEXANDER R LAWRENCE</pre>
+    <pre class="content"><strong>INTER:</strong>
+1.E BARLOW N MAXWELL
+2.K GHAG B HOPPNER
+3.R SAVAGE E EDWARDS
+<hr class="sub-line">
+<strong>SENIOR:</strong>
+1.K GHAG A TOPHAM
+<hr class="sub-line">
+<strong>OPEN:</strong>
+1.I ALEXANDER R LAWRENCE</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="7.45">
   <div class="time">7.45</div>
   <div class="card">
     <h2 class="title">SENIOR &amp; OPEN LYRICAL TRIOS</h2>
-    <pre class="content">SENIOR:1.K GHAG B HOPPNER A TOPHAM 2.I COTTERILL F WISEMAN N LITTLE
-3.C SEEDS M SHALE J PURNELL 4. E ROBSON K DOYLE R SAVAGE
-5.S WATSON F WISEMAN S SILKE 6.E ROBSON K DOYLE A BROOME
+    <pre class="content"><strong>SENIOR:</strong>
+1.K GHAG B HOPPNER A TOPHAM
+2.I COTTERILL F WISEMAN N LITTLE
+3.C SEEDS M SHALE J PURNELL
+4. E ROBSON K DOYLE R SAVAGE
+5.S WATSON F WISEMAN S SILKE
+6.E ROBSON K DOYLE A BROOME
 7.A TOPHAM B HOPPNER C SEEDS
-OPEN: 1.R LAWRENCE O MALTBY D THOMAS</pre>
+<hr class="sub-line">
+<strong>OPEN:</strong>
+1.R LAWRENCE O MALTBY D THOMAS</pre>
   </div>
 </section>
 
-  <section class="section">
+  <section class="section" data-time="8.05">
   <div class="time">8.05</div>
   <div class="card">
     <h2 class="title">APPROX. FINISH</h2>
@@ -565,5 +868,102 @@ OPEN: 1.R LAWRENCE O MALTBY D THOMAS</pre>
 </div>
 
 <a class="back-to-top" href="#top">Back to top</a>
+
+
+
+<script>
+(function () {
+  const eventDate = "2026-03-08";
+  const tz = "Europe/London";
+  const sections = Array.from(document.querySelectorAll(".section[data-time]"));
+
+  function londonNowParts() {
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: tz,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23"
+    }).formatToParts(new Date());
+
+    const get = type => parts.find(p => p.type === type)?.value;
+    return {
+      year: get("year"),
+      month: get("month"),
+      day: get("day"),
+      hour: parseInt(get("hour"), 10),
+      minute: parseInt(get("minute"), 10)
+    };
+  }
+
+  function parseScheduleTime(str) {
+    const raw = (str || "").trim().replace("APPROX.", "").trim();
+    const bits = raw.split(".");
+    if (bits.length < 2) return null;
+    const hour = parseInt(bits[0], 10);
+    const minute = parseInt(bits[1], 10);
+    if (Number.isNaN(hour) || Number.isNaN(minute)) return null;
+    return hour * 60 + minute;
+  }
+
+  const now = londonNowParts();
+  const today = `${now.year}-${now.month}-${now.day}`;
+  if (today !== eventDate) return;
+
+  const nowMinutes = now.hour * 60 + now.minute;
+  const items = sections.map((section) => {
+    const title = section.querySelector(".title")?.textContent?.trim() || "Current session";
+    const timeText = section.dataset.time || "";
+    return {
+      section,
+      title,
+      timeText,
+      minutes: parseScheduleTime(timeText)
+    };
+  }).filter(item => item.minutes !== null);
+
+  if (!items.length) return;
+
+  let current = null;
+  for (let i = 0; i < items.length; i++) {
+    const thisItem = items[i];
+    const nextItem = items[i + 1];
+    const start = thisItem.minutes;
+    const end = nextItem ? nextItem.minutes : start + 60;
+    if (nowMinutes >= start && nowMinutes < end) {
+      current = thisItem;
+      break;
+    }
+  }
+
+  if (!current) {
+    if (nowMinutes < items[0].minutes) {
+      items[0].section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    return;
+  }
+
+  current.section.classList.add("is-live");
+  const card = current.section.querySelector(".card");
+  if (card && !card.querySelector(".live-badge")) {
+    const badge = document.createElement("div");
+    badge.className = "live-badge";
+    const titleText = current.title.toUpperCase();
+    if (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") {
+      badge.textContent = "On Break";
+    } else {
+      badge.textContent = "Now Running";
+    }
+    card.insertBefore(badge, card.firstChild);
+  }
+
+  current.section.scrollIntoView({ behavior: "smooth", block: "start" });
+})();
+</script>
+
+
+
 </body>
 </html>

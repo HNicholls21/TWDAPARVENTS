@@ -208,6 +208,42 @@ header {
   .back-to-top { right: 12px; bottom: 12px; padding: 11px 14px; }
 }
 
+
+.policy-banner {
+  background: linear-gradient(180deg, #fff6f7 0%, #ffffff 100%);
+  border: 1px solid #f0d2d7;
+  border-left: 6px solid var(--red);
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+.policy-banner strong {
+  color: #000000;
+}
+.policy-banner p {
+  margin: 0;
+  line-height: 1.65;
+  color: #222;
+}
+
+
+@keyframes liveGlow {
+  0% { box-shadow: 0 16px 34px rgba(0,0,0,0.10), 0 0 0 rgba(179,0,24,0.00); }
+  50% { box-shadow: 0 16px 34px rgba(0,0,0,0.12), 0 0 22px rgba(179,0,24,0.18); }
+  100% { box-shadow: 0 16px 34px rgba(0,0,0,0.10), 0 0 0 rgba(179,0,24,0.00); }
+}
+.section.is-live .card {
+  animation: liveGlow 2.4s ease-in-out infinite;
+}
+
+
+.sub-line{
+  border:none;
+  border-top:1px solid rgba(0,0,0,0.18);
+  margin:6px 0 6px;
+  width:100%;
+}
 </style>
 </head>
 <body>
@@ -238,16 +274,113 @@ header {
     <p>This page is ready and can be updated once the final programme is available.</p>
     <p>Adjudicator: Leigh-Ann James FABD Examiner</p>
   </section>
+
+  <section class="policy-banner" aria-label="Photo and video policy reminder">
+    <p><strong>🚫📷 No photography or videography permitted.</strong> To protect all performers, families and schools, no photos or videos may be taken at any time during the competition.</p>
+  </section>
   <div class="top-divider"></div>
-  <section class="section">
-    <div class="time break-time">Soon</div>
+  <section class="section" data-time="Soon">
+  <div class="time break-time">Soon</div>
     <div class="card break-card">
       <div class="break-badge">Coming Soon</div><h2 class="title">Sunday 22 March Programme</h2>
       <pre class="content">The programme for this competition day will be published soon.</pre>
     </div>
   </section>
-  <div class="footer">TWDA Performing Arts • 2026 Competition Site</div>
+  <div class="footer">TWDA Performing Arts • 2026 Competition Site • Times are approximate and may be subject to change</div>
 </div>
 <a class="back-to-top" href="#top">Back to top</a>
+
+<script>
+(function () {
+  const eventDate = "2026-03-22";
+  const tz = "Europe/London";
+  const sections = Array.from(document.querySelectorAll(".section[data-time]"));
+
+  function londonNowParts() {
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: tz,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23"
+    }).formatToParts(new Date());
+
+    const get = type => parts.find(p => p.type === type)?.value;
+    return {
+      year: get("year"),
+      month: get("month"),
+      day: get("day"),
+      hour: parseInt(get("hour"), 10),
+      minute: parseInt(get("minute"), 10)
+    };
+  }
+
+  function parseScheduleTime(str) {
+    const raw = (str || "").trim().replace("APPROX.", "").trim();
+    const bits = raw.split(".");
+    if (bits.length < 2) return null;
+    const hour = parseInt(bits[0], 10);
+    const minute = parseInt(bits[1], 10);
+    if (Number.isNaN(hour) || Number.isNaN(minute)) return null;
+    return hour * 60 + minute;
+  }
+
+  const now = londonNowParts();
+  const today = `${now.year}-${now.month}-${now.day}`;
+  if (today !== eventDate) return;
+
+  const nowMinutes = now.hour * 60 + now.minute;
+  const items = sections.map((section) => {
+    const title = section.querySelector(".title")?.textContent?.trim() || "Current session";
+    const timeText = section.dataset.time || "";
+    return {
+      section,
+      title,
+      timeText,
+      minutes: parseScheduleTime(timeText)
+    };
+  }).filter(item => item.minutes !== null);
+
+  if (!items.length) return;
+
+  let current = null;
+  for (let i = 0; i < items.length; i++) {
+    const thisItem = items[i];
+    const nextItem = items[i + 1];
+    const start = thisItem.minutes;
+    const end = nextItem ? nextItem.minutes : start + 60;
+    if (nowMinutes >= start && nowMinutes < end) {
+      current = thisItem;
+      break;
+    }
+  }
+
+  if (!current) {
+    if (nowMinutes < items[0].minutes) {
+      items[0].section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    return;
+  }
+
+  current.section.classList.add("is-live");
+  const card = current.section.querySelector(".card");
+  if (card && !card.querySelector(".live-badge")) {
+    const badge = document.createElement("div");
+    badge.className = "live-badge";
+    const titleText = current.title.toUpperCase();
+    if (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") {
+      badge.textContent = "On Break";
+    } else {
+      badge.textContent = "Now Running";
+    }
+    card.insertBefore(badge, card.firstChild);
+  }
+
+  current.section.scrollIntoView({ behavior: "smooth", block: "start" });
+})();
+</script>
+
 </body>
 </html>
