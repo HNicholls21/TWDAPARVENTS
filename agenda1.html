@@ -4,9 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TWDA Performing Arts – Sunday 8 March</title>
-<style>
-
-:root {
+<style>:root {
   --black: #0c0c0c;
   --red: #b30018;
   --red-dark: #8f0013;
@@ -485,7 +483,6 @@ header {
 }
 
 
-
 /* Dynamic live delay banner */
 .delay-banner.hidden{
   display:none;
@@ -528,14 +525,6 @@ header {
   70%{ box-shadow:0 0 0 10px rgba(208,0,0,0); }
   100%{ box-shadow:0 0 0 0 rgba(208,0,0,0); }
 }
-@media (max-width:1024px){
-  .delay-banner{
-    top:62px;
-    margin:0 14px 10px;
-    align-items:flex-start;
-  }
-}
-
 
 /* Live status pill */
 .live-status-wrap{
@@ -574,52 +563,13 @@ header {
   background:currentColor;
 }
 @media (max-width:1024px){
+  .delay-banner{
+    top:62px;
+    margin:0 14px 10px;
+    align-items:flex-start;
+  }
   .live-status-wrap{
     margin:8px 14px 12px;
-  }
-}
-
-
-/* Mobile status aligned with menu */
-@media (max-width:1024px){
-  .mobile-nav-inner{
-    max-width:1060px;
-    margin:0 auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-  }
-  .mobile-nav-button{
-    flex:0 0 auto;
-  }
-  .mobile-nav-status{
-    flex:0 1 auto;
-    min-width:0;
-    display:flex;
-    justify-content:flex-end;
-  }
-  .mobile-nav-status .live-status-pill{
-    margin:0;
-    max-width:none;
-    white-space:nowrap;
-    font-size:0.82rem;
-    padding:6px 10px;
-  }
-  .mobile-nav-toggle:checked ~ .mobile-nav-status{
-    display:none;
-  }
-  /* Hide standalone status block on mobile if present */
-  .live-status-wrap{
-    display:none;
-  }
-}
-@media (min-width:1025px){
-  .mobile-nav-status{
-    display:none;
-  }
-  .live-status-wrap{
-    display:block;
   }
 }
 
@@ -639,12 +589,6 @@ header {
   <div class="mobile-nav-inner">
     <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" />
     <label for="mobileNavToggle" class="mobile-nav-button">☰ Menu</label>
-    <div class="mobile-nav-status">
-      <div id="mobileLiveStatus" class="live-status-pill status-green">
-        <span class="status-dot"></span>
-        <span>LIVE – On Schedule</span>
-      </div>
-    </div>
     <label for="mobileNavToggle" class="mobile-nav-overlay" aria-hidden="true"></label>
     <aside class="mobile-nav-drawer" aria-label="Mobile site navigation">
       <div class="mobile-nav-header">
@@ -1254,36 +1198,17 @@ header {
 
 
 
+
 <script>
 (function () {
   const eventDate = "2026-03-08";
-
-  /*
-    LIVE DELAY SETTINGS
-    -------------------
-    Leave these values as they are for normal operation.
-
-    To simulate or run a delay in GitHub, edit ONLY the 4 lines below.
-
-    Example:
-    delayModeEnabled = true
-    currentActiveSessionText = "10.40 TOTS/A NOVICE/A LYRICAL"
-    scheduleDelayMinutes = 60
-    forcedPreviewTime = "11.50"
-
-    On the live site, forcedPreviewTime should usually stay blank.
-  */
-  const delayModeEnabled = false;
-  const currentActiveSessionText = "";
-  const scheduleDelayMinutes = ;
-  const forcedPreviewTime = "";
-
   const tz = "Europe/London";
+  const liveStatusUrl = "live-status.json";
+
   const sections = Array.from(document.querySelectorAll(".section[data-time]"));
   const delayBanner = document.getElementById("delayBanner");
   const delayBannerCopy = document.getElementById("delayBannerCopy");
   const statusEl = document.getElementById("liveStatus");
-  const mobileStatusEl = document.getElementById("mobileLiveStatus");
 
   function londonNowParts() {
     const parts = new Intl.DateTimeFormat("en-GB", {
@@ -1320,65 +1245,70 @@ header {
     return (str || "").replace(/\s+/g, " ").trim().toUpperCase();
   }
 
-  function findManualCurrent(items, currentText) {
-    const text = normaliseText(currentText);
-    if (!text) return null;
-
-    const timeMatch = text.match(/^(\d{1,2}\.\d{2})\s+(.*)$/);
-    if (timeMatch) {
-      const wantedTime = timeMatch[1];
-      const wantedTitle = normaliseText(timeMatch[2]);
-
-      const exact = items.find(item =>
-        item.timeText === wantedTime &&
-        normaliseText(item.title).includes(wantedTitle)
-      );
-      if (exact) return exact;
-
-      const timeOnly = items.find(item => item.timeText === wantedTime);
-      if (timeOnly) return timeOnly;
-    }
-
-    return items.find(item => normaliseText(item.title).includes(text)) || null;
-  }
-
-
-
-  function setStatusContent(el, mode, delayMinutes) {
-    if (!el) return;
+  function setStatus(mode, delayMinutes) {
+    if (!statusEl) return;
     if (mode === "red") {
-      el.className = "live-status-pill status-red";
-      el.innerHTML = '<span class="status-dot"></span><span>LIVE – ' + delayMinutes + ' mins behind</span>';
+      statusEl.className = "live-status-pill status-red";
+      statusEl.innerHTML = '<span class="status-dot"></span><span>LIVE – ' + delayMinutes + ' mins behind</span>';
       return;
     }
     if (mode === "yellow") {
-      el.className = "live-status-pill status-yellow";
-      el.innerHTML = '<span class="status-dot"></span><span>Break in Progress</span>';
+      statusEl.className = "live-status-pill status-yellow";
+      statusEl.innerHTML = '<span class="status-dot"></span><span>Break in Progress</span>';
       return;
     }
-    el.className = "live-status-pill status-green";
-    el.innerHTML = '<span class="status-dot"></span><span>LIVE – On Schedule</span>';
+    statusEl.className = "live-status-pill status-green";
+    statusEl.innerHTML = '<span class="status-dot"></span><span>LIVE – On Schedule</span>';
   }
 
-  function updateStatus(currentItem) {
-    if (!statusEl && !mobileStatusEl) return;
+  function clearLiveState() {
+    document.querySelectorAll(".section").forEach(s => {
+      s.classList.remove("is-live");
+      if (s.id === "current-session") s.removeAttribute("id");
+      const oldBadge = s.querySelector(".live-badge");
+      if (oldBadge) oldBadge.remove();
+    });
+  }
 
-    const title = currentItem ? currentItem.title.toUpperCase() : "";
+  function applyCurrentSection(current, delayModeEnabled, delayMinutes) {
+    clearLiveState();
+    if (!current) return;
 
-    if (delayModeEnabled) {
-      setStatusContent(statusEl, "red", scheduleDelayMinutes);
-      setStatusContent(mobileStatusEl, "red", scheduleDelayMinutes);
-      return;
+    current.section.id = "current-session";
+    current.section.classList.add("is-live");
+
+    const card = current.section.querySelector(".card");
+    if (card) {
+      const badge = document.createElement("div");
+      badge.className = "live-badge";
+      const titleText = current.title.toUpperCase();
+      badge.textContent = (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") ? "On Break" : "Now Running";
+      card.insertBefore(badge, card.firstChild);
+
+      if (delayModeEnabled) {
+        setStatus("red", delayMinutes);
+      } else if (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") {
+        setStatus("yellow", delayMinutes);
+      } else {
+        setStatus("green", 0);
+      }
     }
 
-    if (title.includes("COMFORT BREAK") || title === "LUNCH") {
-      setStatusContent(statusEl, "yellow", scheduleDelayMinutes);
-      setStatusContent(mobileStatusEl, "yellow", scheduleDelayMinutes);
+    current.section.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function showDelayBanner(delayModeEnabled, delayMinutes, currentText) {
+    if (!delayBanner || !delayBannerCopy) return;
+    if (!delayModeEnabled) {
+      delayBanner.classList.add("hidden");
       return;
     }
-
-    setStatusContent(statusEl, "green", scheduleDelayMinutes);
-    setStatusContent(mobileStatusEl, "green", scheduleDelayMinutes);
+    delayBanner.classList.remove("hidden");
+    delayBannerCopy.innerHTML =
+      '<strong>Live Schedule Update</strong>' +
+      'The competition is currently running approximately <b>' + delayMinutes + ' minutes behind schedule</b>. ' +
+      (currentText ? 'Current active session: <b>' + currentText + '</b>. ' : '') +
+      'Please allow for slight adjustments to session start times.';
   }
 
   function findCurrentByTime(items, minutesNow) {
@@ -1394,92 +1324,99 @@ header {
     return null;
   }
 
-  let now = londonNowParts();
-  if (forcedPreviewTime) {
-    const bits = forcedPreviewTime.split(".");
-    now.hour = parseInt(bits[0], 10);
-    now.minute = parseInt(bits[1], 10);
-  }
+  function findCurrentByLiveData(items, liveSectionTime, liveSectionTitle) {
+    const wantedTime = (liveSectionTime || "").trim();
+    const wantedTitle = normaliseText(liveSectionTitle || "");
 
-  const today = `${now.year}-${now.month}-${now.day}`;
-  if (today !== eventDate && !forcedPreviewTime) return;
-
-  const actualNowMinutes = now.hour * 60 + now.minute;
-  const delayedNowMinutes = actualNowMinutes - scheduleDelayMinutes;
-
-  const items = sections.map((section) => {
-    const title = section.querySelector(".title")?.textContent?.trim() || "Current session";
-    const timeText = section.dataset.time || "";
-    return {
-      section,
-      title,
-      timeText,
-      minutes: parseScheduleTime(timeText)
-    };
-  }).filter(item => item.minutes !== null);
-
-  if (!items.length) return;
-
-  let current = null;
-
-  if (delayModeEnabled) {
-    // In delay mode, prefer the manual current-session input if provided.
-    current = findManualCurrent(items, currentActiveSessionText);
-    // If not provided or not found, fall back to delay-adjusted time.
-    if (!current) current = findCurrentByTime(items, delayedNowMinutes);
-  } else {
-    // Normal mode: always use the actual current time.
-    current = findCurrentByTime(items, actualNowMinutes);
-  }
-
-  // Clear previous live state and old badges
-  document.querySelectorAll(".section").forEach(s => {
-    s.classList.remove("is-live");
-    if (s.id === "current-session") s.removeAttribute("id");
-    const oldBadge = s.querySelector(".live-badge");
-    if (oldBadge) oldBadge.remove();
-  });
-
-  updateStatus(current);
-
-  // Banner only appears in delay mode
-  if (delayModeEnabled && delayBanner && delayBannerCopy) {
-    delayBanner.classList.remove("hidden");
-    delayBannerCopy.innerHTML =
-      `<strong>Live Schedule Update</strong>` +
-      `The competition is currently running approximately <b>${scheduleDelayMinutes} minutes behind schedule</b>. ` +
-      (currentActiveSessionText
-        ? `Current active session: <b>${currentActiveSessionText}</b>. `
-        : ``) +
-      `Please allow for slight adjustments to session start times.`;
-  } else if (delayBanner) {
-    delayBanner.classList.add("hidden");
-  }
-
-  if (!current) {
-    const referenceMinutes = delayModeEnabled ? delayedNowMinutes : actualNowMinutes;
-    if (referenceMinutes < items[0].minutes) {
-      items[0].section.id = "current-session";
-      items[0].section.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (wantedTime && wantedTitle) {
+      const exact = items.find(item =>
+        item.timeText === wantedTime &&
+        normaliseText(item.title).includes(wantedTitle)
+      );
+      if (exact) return exact;
     }
-    return;
+    if (wantedTime) {
+      const byTime = items.find(item => item.timeText === wantedTime);
+      if (byTime) return byTime;
+    }
+    if (wantedTitle) {
+      const byTitle = items.find(item => normaliseText(item.title).includes(wantedTitle));
+      if (byTitle) return byTitle;
+    }
+    return null;
   }
 
-  current.section.id = "current-session";
-  current.section.classList.add("is-live");
+  async function init() {
+    const now = londonNowParts();
+    const today = `${now.year}-${now.month}-${now.day}`;
+    if (today !== eventDate) return;
 
-  const card = current.section.querySelector(".card");
-  if (card) {
-    const badge = document.createElement("div");
-    badge.className = "live-badge";
-    const titleText = current.title.toUpperCase();
-    badge.textContent = (titleText.includes("COMFORT BREAK") || titleText === "LUNCH") ? "On Break" : "Now Running";
-    card.insertBefore(badge, card.firstChild);
+    const actualNowMinutes = now.hour * 60 + now.minute;
+
+    const items = sections.map((section) => {
+      const title = section.querySelector(".title")?.textContent?.trim() || "Current session";
+      const timeText = section.dataset.time || "";
+      return {
+        section,
+        title,
+        timeText,
+        minutes: parseScheduleTime(timeText)
+      };
+    }).filter(item => item.minutes !== null);
+
+    if (!items.length) return;
+
+    let liveData = null;
+    try {
+      const response = await fetch(liveStatusUrl, { cache: "no-store" });
+      if (response.ok) liveData = await response.json();
+    } catch (e) {
+      // normal mode fallback
+    }
+
+    const delayModeEnabled = !!(
+      liveData &&
+      liveData.current_day === "agenda1" &&
+      liveData.delay_mode_enabled === true &&
+      (liveData.current_section_time || liveData.current_section)
+    );
+
+    let current = null;
+    let delayMinutes = 0;
+    let currentText = "";
+
+    if (delayModeEnabled) {
+      currentText =
+        (liveData.current_section_time ? liveData.current_section_time + " " : "") +
+        (liveData.current_section || "");
+      current = findCurrentByLiveData(items, liveData.current_section_time, liveData.current_section);
+      if (current && typeof current.minutes === "number") {
+        delayMinutes = Math.max(0, actualNowMinutes - current.minutes);
+      }
+    }
+
+    if (!current) {
+      current = findCurrentByTime(items, actualNowMinutes);
+    }
+
+    if (!current) {
+      clearLiveState();
+      setStatus("green", 0);
+      showDelayBanner(false, 0, "");
+      if (actualNowMinutes < items[0].minutes) {
+        items[0].section.id = "current-session";
+      }
+      return;
+    }
+
+    showDelayBanner(delayModeEnabled, delayMinutes, currentText);
+    applyCurrentSection(current, delayModeEnabled, delayMinutes);
   }
 
-  current.section.scrollIntoView({ behavior: "smooth", block: "start" });
+  init();
 })();
 </script>
+
 
 
 
