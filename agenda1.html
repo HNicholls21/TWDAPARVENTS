@@ -71,7 +71,7 @@ header {
 .site-menu-link:hover { background: #fff5f6; transform: translateY(-1px); }
 .site-menu-link.active { background: var(--red); color: var(--white); border-color: var(--red-dark); }
 
-.container { max-width: 1060px; margin: 0 auto; padding: 26px 14px 180px; }
+.container { max-width: 1060px; margin: 0 auto; padding: 26px 14px 42px; }
 
 .hero-card {
   background: linear-gradient(180deg, #ffffff 0%, #fcfcfc 100%);
@@ -281,7 +281,7 @@ header {
   letter-spacing: .06em;
   text-transform: uppercase;
 }
-.footer { text-align: center; color: var(--muted); font-size: 0.93rem; padding: 18px 0 90px; }
+.footer { text-align: center; color: var(--muted); font-size: 0.93rem; padding-top: 12px; }
 
 @media (max-width: 860px) {
   .section { grid-template-columns: 1fr; gap: 8px; }
@@ -485,9 +485,26 @@ header {
 }
 
 
-/* Ensure footer is not hidden behind floating buttons */
-.container{
-  padding-bottom:120px;
+/* Delay notice banner */
+.delay-banner{
+  max-width:1060px;
+  margin:0 auto 10px;
+  padding:14px 16px;
+  background:#f3f3f3;
+  border-left:6px solid #d00000;
+  border-right:2px solid #000;
+  border-top:2px solid #000;
+  border-bottom:2px solid #000;
+  border-radius:8px;
+  font-weight:600;
+  position:sticky;
+  top:72px;
+  z-index:60;
+}
+.delay-banner strong{
+  display:block;
+  font-size:1.05rem;
+  margin-bottom:4px;
 }
 
 </style>
@@ -534,6 +551,18 @@ header {
     <a class="site-menu-link" href="agenda3.html">Sunday 22 March</a>
   </div>
 </nav>
+
+
+<!-- DELAY_BANNER_START
+Uncomment this block to enable the delay notice during the competition.
+<div class="delay-banner">
+<strong>Schedule Update</strong>
+The competition is currently running approximately <b>30 minutes behind schedule</b>.
+Please allow for slight adjustments to session start times.
+</div>
+DELAY_BANNER_END -->
+
+
 
 <div class="container">
   <section class="hero-card">
@@ -1191,7 +1220,5 @@ header {
 
 
 
-<div style="height:90px" aria-hidden="true"></div>
-  <div class="footer">TWDA Performing Arts • 2026 Competition Site • Times are approximate and may be subject to change</div>
 </body>
 </html>

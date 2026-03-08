@@ -497,6 +497,27 @@ header {
   padding-bottom:120px;
 }
 
+/* Delay notice banner */
+.delay-banner{
+  max-width:1060px;
+  margin:0 auto 10px;
+  padding:14px 16px;
+  background:#f3f3f3;
+  border-left:6px solid #d00000;
+  border-right:2px solid #000;
+  border-top:2px solid #000;
+  border-bottom:2px solid #000;
+  border-radius:8px;
+  font-weight:600;
+  position:sticky;
+  top:72px;
+  z-index:60;
+}
+.delay-banner strong{
+  display:block;
+  font-size:1.05rem;
+  margin-bottom:4px;
+}
 </style>
 </head>
 <body>
@@ -540,6 +561,18 @@ header {
     <a class="site-menu-link" href="awards.html">Awards</a>
   </div>
 </nav>
+
+
+<!-- DELAY_BANNER_START
+Uncomment this block to enable the delay notice during the competition.
+<div class="delay-banner">
+<strong>Schedule Update</strong>
+The competition is currently running approximately <b>30 minutes behind schedule</b>.
+Please allow for slight adjustments to session start times.
+</div>
+DELAY_BANNER_END -->
+
+
 
 <div class="container">
   <section class="hero-card">
