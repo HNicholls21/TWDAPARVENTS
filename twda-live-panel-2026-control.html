@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TWDA Live Panel</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f7f7f7}
+header{background:#000;color:#fff;padding:20px;border-bottom:4px solid #b30018}
+main{max-width:900px;margin:auto;padding:20px}
+.card{background:#fff;padding:20px;border-radius:12px;margin-bottom:16px}
+label{font-weight:bold;display:block;margin-top:10px}
+select,input,textarea{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #ccc}
+textarea{height:200px;font-family:monospace}
+button{background:#b30018;color:#fff;border:none;padding:10px 16px;border-radius:999px;margin-top:10px;cursor:pointer;font-weight:bold}
+</style>
+</head>
+<body>
+
+<header>
+<h1 style="margin:0">TWDA Live Panel</h1>
+</header>
+
+<main>
+
+<div class="card">
+<label>Competition Day</label>
+<select id="day">
+<option value="agenda1">Sunday 8 March</option>
+<option value="agenda2">Sunday 15 March</option>
+<option value="agenda3">Sunday 22 March</option>
+</select>
+
+<label>Live Section</label>
+<select id="sectionSelect"></select>
+
+<label>Current Section Time</label>
+<input id="time">
+
+<label>Current Section Name</label>
+<input id="section">
+
+<label>Delay Mode</label>
+<select id="delay">
+<option value="false">Off</option>
+<option value="true">On</option>
+</select>
+
+<button onclick="download()">Download JSON</button>
+
+</div>
+
+<div class="card">
+<label>live-status.json</label>
+<textarea id="output"></textarea>
+</div>
+
+</main>
+
+<script>
+
+const agendaOptions = {"agenda1": [{"time": "08.30", "section": "Tots/Primary/Junior Modern Trios", "label": "08.30 \u2014 Tots/Primary/Junior Modern Trios"}, {"time": "09.00", "section": "C/D NOVICE/D BALLET SOLO", "label": "09.00 \u2014 C/D NOVICE/D BALLET SOLO"}, {"time": "09.20", "section": "TOTS/A NOVICE/A TAP SOLO", "label": "09.20 \u2014 TOTS/A NOVICE/A TAP SOLO"}, {"time": "09.35", "section": "INTER MODERN DUETS", "label": "09.35 \u2014 INTER MODERN DUETS"}, {"time": "09.55", "section": "TOTS/PRIMARY/JUNIOR TAP TROUPE", "label": "09.55 \u2014 TOTS/PRIMARY/JUNIOR TAP TROUPE"}, {"time": "10.20", "section": "E NOVICE/E/F/G BALLET SOLO", "label": "10.20 \u2014 E NOVICE/E/F/G BALLET SOLO"}, {"time": "10.40", "section": "TOTS/A NOVICE/A LYRICAL", "label": "10.40 \u2014 TOTS/A NOVICE/A LYRICAL"}, {"time": "11.00", "section": "D  NOVICE CONTEMPORARY SOLO", "label": "11.00 \u2014 D  NOVICE CONTEMPORARY SOLO"}, {"time": "11.20", "section": "COMFORT BREAK", "label": "11.20 \u2014 COMFORT BREAK"}, {"time": "11.25", "section": "F NOVICE/ F & G MODERN SOLOS", "label": "11.25 \u2014 F NOVICE/ F & G MODERN SOLOS"}, {"time": "12.00", "section": "TOTS/PRIMARY/JUNIOR TAP DUETS", "label": "12.00 \u2014 TOTS/PRIMARY/JUNIOR TAP DUETS"}, {"time": "12.15", "section": "INTER & SENIOR MODERN TRIOS", "label": "12.15 \u2014 INTER & SENIOR MODERN TRIOS"}, {"time": "12.35", "section": "B LYRICAL SOLO", "label": "12.35 \u2014 B LYRICAL SOLO"}, {"time": "12.55", "section": "PRIMARY LYRICAL TROUPE", "label": "12.55 \u2014 PRIMARY LYRICAL TROUPE"}, {"time": "13.00", "section": "LUNCH", "label": "13.00 \u2014 LUNCH"}, {"time": "13.30", "section": "INTER ACRO TROUPE", "label": "13.30 \u2014 INTER ACRO TROUPE"}, {"time": "14.00", "section": "TOTS/A NOVICE/A /B BALLET SOLO", "label": "14.00 \u2014 TOTS/A NOVICE/A /B BALLET SOLO"}, {"time": "14.20", "section": "C NOVICE/C MODERN SOLO", "label": "14.20 \u2014 C NOVICE/C MODERN SOLO"}, {"time": "14.50", "section": "F NOVICE /F/G CONTEMPORARY SOLO", "label": "14.50 \u2014 F NOVICE /F/G CONTEMPORARY SOLO"}, {"time": "15.20", "section": "INTER LYRICAL DUETS", "label": "15.20 \u2014 INTER LYRICAL DUETS"}, {"time": "15.50", "section": "PRIMARY & JUNIOR ACRO TRIOS", "label": "15.50 \u2014 PRIMARY & JUNIOR ACRO TRIOS"}, {"time": "16.15", "section": "SENIOR & OPEN CLASSICAL SMALL GROUPS", "label": "16.15 \u2014 SENIOR & OPEN CLASSICAL SMALL GROUPS"}, {"time": "16.45", "section": "JUNIOR LYRICAL SMALL GROUP", "label": "16.45 \u2014 JUNIOR LYRICAL SMALL GROUP"}, {"time": "17.05", "section": "D NOVICE & OPEN ACRO SOLO", "label": "17.05 \u2014 D NOVICE & OPEN ACRO SOLO"}, {"time": "17.30", "section": "E TAP SOLO", "label": "17.30 \u2014 E TAP SOLO"}, {"time": "17.50", "section": "D/E NOVICE/E CONTEMPORARY SOLO", "label": "17.50 \u2014 D/E NOVICE/E CONTEMPORARY SOLO"}, {"time": "18.15", "section": "JUNIOR CABARET SMALL GROUP", "label": "18.15 \u2014 JUNIOR CABARET SMALL GROUP"}, {"time": "18.30", "section": "SENIOR & OPEN CONTEMPORARY TROUPES", "label": "18.30 \u2014 SENIOR & OPEN CONTEMPORARY TROUPES"}, {"time": "19.10", "section": "SENIOR LYRICAL DUETS", "label": "19.10 \u2014 SENIOR LYRICAL DUETS"}, {"time": "19.30", "section": "INTER /SENIOR/ OPEN TAP DUETS", "label": "19.30 \u2014 INTER /SENIOR/ OPEN TAP DUETS"}, {"time": "19.45", "section": "SENIOR & OPEN LYRICAL TRIOS", "label": "19.45 \u2014 SENIOR & OPEN LYRICAL TRIOS"}, {"time": "20.05", "section": "APPROX. FINISH", "label": "20.05 \u2014 APPROX. FINISH"}], "agenda2": [], "agenda3": []};
+
+const day=document.getElementById("day")
+const select=document.getElementById("sectionSelect")
+const time=document.getElementById("time")
+const section=document.getElementById("section")
+const delay=document.getElementById("delay")
+const output=document.getElementById("output")
+
+function populate(){
+const list=agendaOptions[day.value]||[]
+select.innerHTML=""
+
+const blank=document.createElement("option")
+blank.textContent="Select section"
+blank.value=""
+select.appendChild(blank)
+
+list.forEach((item,i)=>{
+const opt=document.createElement("option")
+opt.value=i
+opt.textContent=item.label
+select.appendChild(opt)
+})
+}
+
+select.addEventListener("change",()=>{
+const item=agendaOptions[day.value][select.value]
+if(!item) return
+time.value=item.time
+section.value=item.section
+generate()
+})
+
+day.addEventListener("change",populate)
+
+function generate(){
+const obj={
+current_day:day.value,
+current_section_time:time.value.trim(),
+current_section:section.value.trim(),
+delay_mode_enabled:delay.value==="true"
+}
+output.value=JSON.stringify(obj,null,2)
+return obj
+}
+
+function download(){
+const blob=new Blob([JSON.stringify(generate(),null,2)],{type:"application/json"})
+const a=document.createElement("a")
+a.href=URL.createObjectURL(blob)
+a.download="live-status.json"
+a.click()
+}
+
+populate()
+generate()
+
+</script>
+
+</body>
+</html>
