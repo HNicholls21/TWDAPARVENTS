@@ -622,6 +622,46 @@ header {
   margin-bottom:12px;
 }
 
+
+/* Mother's Day special */
+.special-offer-card{
+  margin:0 0 16px;
+  padding:16px 18px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#fff8fb 0%,#fff3f7 100%);
+  border:1px solid rgba(179,0,24,0.14);
+  box-shadow:0 10px 24px rgba(0,0,0,0.05);
+}
+.special-offer-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid rgba(179,0,24,0.16);
+  color:var(--red-dark);
+  font-weight:800;
+  font-size:.82rem;
+  margin-bottom:10px;
+}
+.special-offer-card h3{
+  margin:0 0 6px;
+  font-size:1.2rem;
+}
+.special-offer-card p{
+  margin:4px 0;
+}
+.special-offer-price{
+  display:inline-flex;
+  margin-top:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:var(--red);
+  color:#fff;
+  font-weight:800;
+}
+
 </style>
 </head>
 <body>
@@ -677,6 +717,15 @@ header {
 
   <div class="cafe-status-strip">
     <div class="cafe-status-pill">☕ Open 08:00 – 18:00</div>
+
+  <section class="special-offer-card">
+    <div class="special-offer-kicker">🌸 Mother’s Day Treat</div>
+    <h3>Mother’s Day Special</h3>
+    <p>Cupcake + Hot Drink</p>
+    <div class="special-offer-price">£3.50</div>
+    <p class="cafe-subtitle">Available Sunday 15 March only.</p>
+  </section>
+
     <div class="cafe-meta-pill">💳 Cash & card accepted</div>
     <div class="cafe-meta-pill">✨ Available throughout the day</div>
   </div>
